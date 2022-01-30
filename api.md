@@ -1,13 +1,8 @@
-# API
+# Data
 
 **bold** indispensabili per la scheda summary
 
-gli altri sono solo per la scheda financial o statistics
-
-## Auth
-
-- Login
-- Signin
+gli altri sono per altre schede (principalmente financial)
 
 ## Stock
 
@@ -64,7 +59,7 @@ Immagino che i provider di dati forniscano tutto quello che segue in un'unica AP
 - Goodwill, Net
 - Intangibles, Net
 - Other Long Term Assets, Total
-- Total Assets
+- **Total Assets**
 - Payable/​Accrued
 - Accrued Expenses
 - Notes Payable/​Short Term Debt
@@ -110,9 +105,13 @@ Immagino che i provider di dati forniscano tutto quello che segue in un'unica AP
 ### Other info:
 
 - **Profile** (breve descrizione dell'azienda)
-- Settore (di solito viene fornito in dato del tipo: _Software and services_ => _Software_ => _Application Software_)
+- **Settore** (di solito viene fornito in dato del tipo: _Software and services_ => _Software_ => _Application Software_)
 - Management
 - Ownership
+- N. dipendenti
+- **Location**
+- Insider trading
+- **Dividendi**
 
 ## ETF
 
@@ -125,3 +124,32 @@ Immagino che i provider di dati forniscano tutto quello che segue in un'unica AP
 
 - Fornitore
 - **Composizione**
+
+# API
+
+## Auth
+
+- Login
+- Signin
+
+## User
+
+- Profile
+- Profile/comments (delete anche per chi riceve?)
+- Portfolios
+- Portfolio
+- Protfolio/comments
+
+## Stock
+
+- Search
+- Stock/Data (finalcials, prifile, settore...)
+- Stock/Price
+- Stock/Comments
+
+## ETF
+
+- Search
+- Etf/Data (fornitore, composizione...)
+- Etf/Price
+- Etf/Comments
