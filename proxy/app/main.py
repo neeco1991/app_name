@@ -31,7 +31,7 @@ def get_stock_candles(
     response = finnhub_client.stock_candles(
         symbol=symbol, resolution=resolution, _from=timestamp_from, to=timestamp_to
     )
-    print(response)
+
     return response
 
 
