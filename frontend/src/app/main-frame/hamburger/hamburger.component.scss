@@ -1,0 +1,110 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #fff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.main {
+  text-align: center;
+}
+
+.hamburger {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 20px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background: #f953c6; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      var(--color-primary-dark-2),
+      var(--color-primary-dark-1)
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      var(--color-primary-dark-2),
+      var(--color-primary-dark-1)
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    transform: rotate(0deg);
+    transition: all 0.4s cubic-bezier(0.54, -0.1, 0.57, 0.57);
+  }
+
+  .hamburger-input {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+  }
+
+  .hamburger-line {
+    width: 100%;
+    background: #fff;
+    height: 2px;
+    display: block;
+    border-radius: 6px;
+    transition: transform 0.4s cubic-bezier(0.54, -0.81, 0.57, 0.57);
+    position: relative;
+
+    &.first,
+    &.third {
+      width: 50%;
+    }
+
+    &.third {
+      margin-left: 50%;
+      transform-origin: left;
+    }
+  }
+}
+
+.menu-button-wrapper {
+  position: relative;
+  display: inline-block;
+
+  .menu-button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+.menu-button {
+  &:checked ~ .icon-wrapper .hamburger-line.first {
+    transform: translate(0px, 2px) rotate(-45deg);
+  }
+
+  &:checked ~ .icon-wrapper .hamburger-line.third {
+    transform: translate(-0.5px, 0px) rotate(-135deg);
+  }
+
+  &:checked ~ .icon-wrapper .hamburger:before {
+    transform: rotate(45deg);
+  }
+}

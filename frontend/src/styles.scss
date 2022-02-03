@@ -1,10 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Mouser";
+  src: local("Mouser"), url(./assets/fonts/mouser.otf) format("truetype");
+}
+
+@font-face {
+  font-family: "Qbicle";
+  src: local("Qbicle"), url(./assets/fonts/qbicle.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Simplifica";
+  src: local("Simplifica"),
+    url(./assets/fonts/simplifica.ttf) format("truetype");
+}
+
 :root {
   --color-primary: #29a0b1;
-  --color-primary-dark: #167d7f;
+  --color-primary-dark-1: #167d7f;
+  --color-primary-dark-2: #136d6e;
   --color-primary-light-1: #98d7c2;
   --color-primary-light-2: #ddffe7;
 
+  --color-grey-dark-0: #000;
   --color-grey-dark-1: #333;
   --color-grey-dark-2: #777;
   --color-grey-dark-3: #999;

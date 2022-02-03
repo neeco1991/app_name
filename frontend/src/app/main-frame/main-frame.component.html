@@ -1,0 +1,8 @@
+<div class="main-frame">
+  <div class="main-frame__sidebar" [@expand]="menuClosed">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="main-frame__header">
+    <app-header (hamburgerAction)="toggleMenu()"></app-header>
+  </div>
+</div>

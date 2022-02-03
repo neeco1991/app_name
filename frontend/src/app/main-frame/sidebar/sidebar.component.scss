@@ -1,0 +1,28 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-grey-dark-4);
+  height: 100%;
+  box-shadow: var(--shadow-dark);
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 8rem;
+    background-color: var(--color-primary);
+    border-right: 1px solid var(--color-grey-dark-4);
+    border-bottom: 2px solid var(--color-primary-dark-1);
+  }
+
+  &__menu {
+    // border-right: 1px solid var(--color-grey-dark-4);
+  }
+}
+
+.app-name {
+  font-family: "Qbicle";
+  font-size: 3rem;
+}
