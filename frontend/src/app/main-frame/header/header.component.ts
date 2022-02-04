@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +8,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class HeaderComponent implements OnInit {
   constructor() {}
 
+  @Input() sidebarExpanded = false;
   @Output() hamburgerAction = new EventEmitter<void>();
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.sidebarExpanded);
+  }
 
   onHamburgerClick() {
     this.hamburgerAction.emit();

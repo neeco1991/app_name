@@ -1,13 +1,5 @@
-<div class="main">
-  <label class="menu-button-wrapper" for="">
-    <input type="checkbox" class="menu-button" />
-    <div class="icon-wrapper">
-      <label class="hamburger">
-        <input class="hamburger-input" type="checkbox" />
-        <span class="hamburger-line first"></span>
-        <span class="hamburger-line second"></span>
-        <span class="hamburger-line third"></span>
-      </label>
-    </div>
-  </label>
+<div class="menu-link-wrapper" [ngClass]="{ 'menu-trigger-open': expanded }">
+  <div class="menu-link">
+    <span class="lines"></span>
+  </div>
 </div>

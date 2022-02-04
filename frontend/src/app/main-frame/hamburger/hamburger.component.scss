@@ -1,110 +1,106 @@
-html,
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background: #fff;
+  background: #224466;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.main {
-  text-align: center;
-}
-
-.hamburger {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: space-between;
+.menu-link-wrapper {
+  width: 65px;
+  height: 45px;
   cursor: pointer;
-  padding: 20px;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 20px;
-    background: #f953c6; /* fallback for old browsers */
-    background: -webkit-linear-gradient(
-      to right,
-      var(--color-primary-dark-2),
-      var(--color-primary-dark-1)
-    ); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(
-      to right,
-      var(--color-primary-dark-2),
-      var(--color-primary-dark-1)
-    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    transform: rotate(0deg);
-    transition: all 0.4s cubic-bezier(0.54, -0.1, 0.57, 0.57);
-  }
-
-  .hamburger-input {
-    position: absolute;
-    opacity: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    cursor: pointer;
-  }
-
-  .hamburger-line {
-    width: 100%;
-    background: #fff;
-    height: 2px;
-    display: block;
-    border-radius: 6px;
-    transition: transform 0.4s cubic-bezier(0.54, -0.81, 0.57, 0.57);
-    position: relative;
-
-    &.first,
-    &.third {
-      width: 50%;
-    }
-
-    &.third {
-      margin-left: 50%;
-      transform-origin: left;
-    }
-  }
+  margin: 60px auto;
 }
 
-.menu-button-wrapper {
+.menu-link {
+  width: 100%;
+  height: 100%;
+}
+
+.lines {
+  -moz-transition: background 0.1s ease 0.2s;
+  -o-transition: background 0.1s ease 0.2s;
+  -webkit-transition: background 0.1s ease;
+  -webkit-transition-delay: 0.2s;
+  transition: background 0.1s ease 0.2s;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #aaa;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  width: 60%;
+  margin: 0 20%;
   position: relative;
-  display: inline-block;
-
-  .menu-button {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    left: 0;
-    z-index: 2;
-    opacity: 0;
-    cursor: pointer;
-  }
+  background: #ffffff;
+  top: 22px;
 }
 
-.menu-button {
-  &:checked ~ .icon-wrapper .hamburger-line.first {
-    transform: translate(0px, 2px) rotate(-45deg);
-  }
+.lines:before,
+.lines:after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #aaa;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  position: absolute;
+  left: 0;
+  content: "";
+  background: #ffffff;
+  -moz-transition: -moz-transform 0.1s ease 0s, width 0.1s ease 0.1s,
+    top 0.1s ease 0.2s;
+  -o-transition: -o-transform 0.1s ease 0s, width 0.1s ease 0.1s,
+    top 0.1s ease 0.2s;
+  -webkit-transition: -webkit-transform 0.1s ease, width 0.1s ease,
+    top 0.1s ease;
+  -webkit-transition-delay: 0s, 0.1s, 0.2s;
+  transition: transform 0.1s ease 0s, width 0.1s ease 0.1s, top 0.1s ease 0.2s;
+  -moz-transform-origin: 0 50%;
+  -ms-transform-origin: 0 50%;
+  -webkit-transform-origin: 0 50%;
+  transform-origin: 0 50%;
+}
 
-  &:checked ~ .icon-wrapper .hamburger-line.third {
-    transform: translate(-0.5px, 0px) rotate(-135deg);
-  }
+.lines:before {
+  top: -10px;
+}
 
-  &:checked ~ .icon-wrapper .hamburger:before {
-    transform: rotate(45deg);
-  }
+.lines:after {
+  top: 10px;
+}
+
+.menu-trigger-open .lines {
+  -moz-transition: background 0.1s ease 0s;
+  -o-transition: background 0.1s ease 0s;
+  -webkit-transition: background 0.1s ease;
+  -webkit-transition-delay: 0s;
+  transition: background 0.1s ease 0s;
+}
+
+.menu-trigger-open .lines:before,
+.menu-trigger-open .lines:after {
+  -moz-transition: top 0.1s ease 0s, width 0.1s ease 0.1s,
+    -moz-transform 0.1s ease 0.2s;
+  -o-transition: top 0.1s ease 0s, width 0.1s ease 0.1s,
+    -o-transform 0.1s ease 0.2s;
+  -webkit-transition: top 0.1s ease, width 0.1s ease,
+    -webkit-transform 0.1s ease;
+  -webkit-transition-delay: 0s, 0.1s, 0.2s;
+  transition: top 0.1s ease 0s, width 0.1s ease 0.1s, transform 0.1s ease 0.2s;
+  top: 0;
+  width: 50%;
+}
+
+.menu-trigger-open .lines:before {
+  -moz-transform: rotate3d(0, 0, 1, 45deg);
+  -webkit-transform: rotate3d(0, 0, 1, 45deg);
+  transform: rotate3d(0, 0, 1, 45deg);
+}
+
+.menu-trigger-open .lines:after {
+  -moz-transform: rotate3d(0, 0, 1, -45deg);
+  -webkit-transform: rotate3d(0, 0, 1, -45deg);
+  transform: rotate3d(0, 0, 1, -45deg);
 }

@@ -1,11 +1,5 @@
 <div class="header">
-  <!-- <img
-    src="assets/hamburger.svg"
-    alt=""
-    class="header__hamburger"
-    (click)="onHamburgerClick()"
-  /> -->
   <div class="header__hamburger" (click)="onHamburgerClick()">
-    <app-hamburger></app-hamburger>
+    <app-hamburger [expanded]="sidebarExpanded"></app-hamburger>
   </div>
 </div>
