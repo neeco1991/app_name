@@ -14,13 +14,13 @@ import { Component, OnInit } from '@angular/core';
   animations: [
     trigger('expand', [
       state('true', style({ width: '0' })),
-      state('false', style({ width: '20rem' })),
+      state('false', style({ width: '25rem' })),
       transition('false <=> true', animate(200)),
     ]),
   ],
 })
 export class MainFrameComponent implements OnInit {
-  menuClosed = true;
+  menuClosed = false;
 
   constructor() {}
 

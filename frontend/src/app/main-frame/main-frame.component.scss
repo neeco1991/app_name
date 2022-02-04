@@ -1,12 +1,4 @@
 .main-frame {
   display: flex;
-
-  &__sidebar {
-    // width: 20rem;
-    height: 100vh;
-  }
-
-  &__header {
-    flex-grow: 1;
-  }
+  flex-direction: column;
 }

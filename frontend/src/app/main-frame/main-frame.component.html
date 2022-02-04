@@ -1,12 +1,10 @@
 <div class="main-frame">
-  <div class="main-frame__sidebar" [@expand]="menuClosed">
-    <app-sidebar></app-sidebar>
-  </div>
-  <div class="main-frame__header">
-    <app-header
-      (hamburgerAction)="toggleMenu()"
-      [sidebarExpanded]="!menuClosed"
-    ></app-header>
+  <app-header
+    (hamburgerAction)="toggleMenu()"
+    [sidebarExpanded]="!menuClosed"
+  ></app-header>
+  <div [@expand]="menuClosed">
+    <app-sidebar [sidebarExpanded]="!menuClosed"></app-sidebar>
   </div>
   <router-outlet></router-outlet>
 </div>

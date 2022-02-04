@@ -1,4 +1,7 @@
 <div class="header">
+  <div class="header__logo" [@collapse]="sidebarExpanded">
+    <div class="app-name">logo</div>
+  </div>
   <div class="header__hamburger" (click)="onHamburgerClick()">
     <app-hamburger [expanded]="sidebarExpanded"></app-hamburger>
   </div>
