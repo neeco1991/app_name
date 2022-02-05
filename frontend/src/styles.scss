@@ -15,6 +15,11 @@
     url(./assets/fonts/simplifica.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto"), url(./assets/fonts/roboto.ttf) format("truetype");
+}
+
 :root {
   --color-primary: #29a0b1;
   --color-primary-dark-1: #167d7f;
@@ -22,12 +27,12 @@
   --color-primary-light-1: #98d7c2;
   --color-primary-light-2: #ddffe7;
 
-  --color-grey-dark-0: #000;
-  --color-grey-dark-1: #333;
-  --color-grey-dark-2: #777;
-  --color-grey-dark-3: #999;
-  --color-grey-dark-4: #ccc;
-  --color-grey-dark-5: #eee;
+  --color-grey-0: #000;
+  --color-grey-1: #333;
+  --color-grey-2: #777;
+  --color-grey-3: #999;
+  --color-grey-4: #ccc;
+  --color-grey-5: #eee;
 
   --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
   --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
