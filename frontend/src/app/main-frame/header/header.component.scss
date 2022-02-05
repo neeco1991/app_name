@@ -1,10 +1,11 @@
 .header {
+  display: flex;
+  align-items: center;
+
   height: 8rem;
   border-bottom: 2px solid var(--color-primary-dark-1);
   background-color: var(--color-primary);
   box-shadow: var(--shadow-light);
-  display: flex;
-  align-items: center;
 
   &__hamburger {
     margin-left: 1rem;
@@ -16,8 +17,12 @@
     align-items: center;
     justify-content: center;
 
-    border-right: 1px solid var(--color-grey-dark-4);
+    border-right: 1px solid var(--color-grey-4);
     height: 100%;
+  }
+
+  &__user {
+    margin-left: auto;
   }
 }
 

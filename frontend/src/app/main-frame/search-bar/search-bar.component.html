@@ -1,0 +1,11 @@
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search">
+  <input
+    formControlName="stock"
+    type="text"
+    class="search__input"
+    placeholder="Search stocks"
+  />
+  <button class="search__button">
+    <img src="assets/search.svg" class="search__icon" />
+  </button>
+</form>
