@@ -22,7 +22,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class HeaderComponent implements OnInit {
   constructor() {}
 
-  @Input() sidebarExpanded = false;
+  @Input() sidebarExpanded = true;
   @Output() hamburgerAction = new EventEmitter<void>();
 
   ngOnInit(): void {}

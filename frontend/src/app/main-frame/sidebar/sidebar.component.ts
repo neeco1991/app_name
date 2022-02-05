@@ -15,7 +15,7 @@ import { Component, Input, OnInit } from '@angular/core';
     trigger('collapse', [
       state('false', style({ width: '0' })),
       state('true', style({ width: '25rem' })),
-      transition('* <=> *', animate(200)),
+      transition('false <=> true', animate(1200)),
     ]),
   ],
 })
