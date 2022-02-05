@@ -6,17 +6,18 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { collapseAnimation } from '../animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   animations: [
-    trigger('collapse', [
-      state('false', style({ width: '0', visibility: 'hidden' })),
-      state('true', style({ width: '25rem', visibility: 'visible' })),
-      transition('false <=> true', animate(200)),
-    ]),
+    collapseAnimation(
+      { width: '0', visibility: 'hidden' },
+      { width: '25rem', visibility: 'visible' },
+      200
+    ),
   ],
 })
 export class HeaderComponent implements OnInit {
