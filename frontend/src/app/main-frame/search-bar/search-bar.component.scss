@@ -38,6 +38,7 @@
   &__button {
     border: none;
     background-color: var(--color-grey-5);
+    transition: all 0.2s;
 
     &:focus {
       outline: none;
