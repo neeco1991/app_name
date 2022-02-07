@@ -11,7 +11,7 @@
     </button> -->
   </form>
 
-  <div class="results">
-    <div class="results__item">test</div>
+  <div *ngIf="queryResults$ | async as results" class="results">
+    <div class="results__item">{{ results }}</div>
   </div>
 </div>
