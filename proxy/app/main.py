@@ -2,7 +2,7 @@ import uvicorn as uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from proxy.app.src.settings import ORIGINS
+from .src.settings import ORIGINS
 from .src.clients import finnhub_client
 from .src.models import Search, StockSymbol, Resolution, Candle
 
