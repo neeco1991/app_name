@@ -20,7 +20,7 @@ interface Query {
 }
 
 @Injectable({ providedIn: 'root' })
-export class StocksService {
+export class SearchService {
   private baseUrl = `${environment.backend.url}search`;
   constructor(private http: HttpClient) {}
 

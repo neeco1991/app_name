@@ -12,6 +12,28 @@
   </form>
 
   <div *ngIf="queryResults$ | async as results" class="results">
-    <div class="results__item">{{ results }}</div>
+    <div *ngFor="let result of results" class="results__item">
+      <b> {{ result.symbol }} </b>
+      <div style="margin-left: 1rem">
+        {{ result.description | capitalize: "all" }}
+      </div>
+      <div style="margin-left: 1rem; font-size: 2rem">
+        {{ result.type }}
+      </div>
+    </div>
   </div>
+  <!-- <div class="results">
+    <div class="results__scrollbar-fix">
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+      <div class="results__item">AAPL APPLE INC Common Stock</div>
+    </div>
+  </div> -->
 </div>

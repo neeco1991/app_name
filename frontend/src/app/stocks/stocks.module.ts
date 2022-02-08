@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SummaryComponent } from './summary/summary.component';
 import { StocksRoutingModule } from './stocks.routing';
 import { StockTitleComponent } from './stock-title/stock-title.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [SummaryComponent, StockTitleComponent],
-  imports: [CommonModule, StocksRoutingModule],
+  imports: [StocksRoutingModule, SharedModule],
 })
 export class StocksModule {}
