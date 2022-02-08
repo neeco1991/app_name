@@ -1,10 +1,20 @@
 import uvicorn as uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
+from proxy.app.src.settings import ORIGINS
 from .src.clients import finnhub_client
 from .src.models import Search, StockSymbol, Resolution, Candle
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/search", response_model=Search)
