@@ -1,24 +1,38 @@
 <div class="stock-search">
   <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search">
     <input
+      #searchInput
       formControlName="stock"
       type="text"
       class="search__input"
       placeholder="Search stocks"
+      (focus)="onFocus(true)"
+      (blur)="onFocus(false)"
     />
-  </form>
 
-  <div *ngIf="queryResults$ | async as results" class="results">
-    <div class="results__scrollbar-fix">
-      <div *ngFor="let result of results" class="results__item">
-        <b> {{ result.symbol }} </b>
-        <div style="margin-left: 1rem">
-          {{ result.description | capitalize: "all" }}
-        </div>
-        <div style="margin-left: 1rem; font-size: 2rem">
-          {{ result.type }}
-        </div>
-      </div>
+    <div *ngIf="queryResults$ | async as results" style="width: 100%">
+      <select
+        formControlName="results"
+        class="results results__scrollbar-fix"
+        size="5"
+        id="query_results"
+      >
+        <option
+          *ngFor="let result of results; let i = index"
+          [ngValue]="result.symbol"
+          class="results__item"
+          (click)="onSubmit()"
+          [id]="'query_results_' + i"
+        >
+          <b> {{ result.symbol }} </b>
+          <div style="margin-left: 1rem">
+            {{ result.description | capitalize: "all" }}
+          </div>
+          <div style="margin-left: 1rem; font-size: 2rem">
+            {{ result.type }}
+          </div>
+        </option>
+      </select>
     </div>
-  </div>
+  </form>
 </div>

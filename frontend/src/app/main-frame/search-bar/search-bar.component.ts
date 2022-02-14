@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -16,11 +23,17 @@ import { SearchService } from 'src/app/shared/services/search.service';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
-export class SearchBarComponent implements OnInit, OnDestroy {
+export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private router: Router, private searchService: SearchService) {}
 
-  searchForm: FormGroup = new FormGroup({ stock: new FormControl() });
+  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+
+  searchForm: FormGroup = new FormGroup({
+    stock: new FormControl(),
+    results: new FormControl(),
+  });
   destroy$ = new Subject<void>();
+  isFocused = false;
 
   queryResults$ = this.searchForm.valueChanges.pipe(
     pluck('stock'),
@@ -37,9 +50,35 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  ngAfterViewInit(): void {
+    console.log(this.searchInput);
+    this.searchInput.nativeElement.addEventListener(
+      'keydown',
+      ({ key }: { [key: string]: string }) => {
+        if (key === 'ArrowDown') {
+          const option = <HTMLOptionElement>(
+            document.getElementById('query_results_0')
+          );
+          console.log(option);
+          option.selected = true;
+          const select = <HTMLSelectElement>(
+            document.getElementById('query_results')
+          );
+          select.focus();
+          select.scrollTop = 0;
+        }
+      }
+    );
+  }
+
   onSubmit() {
-    const { stock } = this.searchForm.value;
-    this.searchForm.reset();
-    this.router.navigate(['stock', stock, 'summary']);
+    console.log(this.searchForm.value);
+    // const { stock } = this.searchForm.value;
+    // this.searchForm.reset();
+    // this.router.navigate(['stock', stock, 'summary']);
+  }
+
+  onFocus(state: boolean) {
+    this.isFocused = state;
   }
 }
