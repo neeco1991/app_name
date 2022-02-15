@@ -1,4 +1,4 @@
-<div class="stock-search">
+<div class="stock-search" on-focus="testFocus()">
   <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search">
     <input
       #searchInput
@@ -6,8 +6,8 @@
       type="text"
       class="search__input"
       placeholder="Search stocks"
-      (focus)="onFocus(true)"
-      (blur)="onFocus(false)"
+      (focus)="onInputFocus(true)"
+      (blur)="onInputFocus(false)"
     />
 
     <div *ngIf="queryResults$ | async as results" style="width: 100%">
@@ -17,6 +17,8 @@
         size="5"
         id="query_results"
         (keydown.enter)="onSubmit()"
+        (focus)="onSelectFocus(true)"
+        (blur)="onSelectFocus(false)"
       >
         <option
           *ngFor="let result of results; let i = index"

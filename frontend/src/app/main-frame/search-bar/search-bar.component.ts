@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -14,7 +15,6 @@ import {
   pluck,
   Subject,
   switchMap,
-  tap,
 } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
@@ -34,7 +34,8 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
     results: new FormControl(),
   });
   destroy$ = new Subject<void>();
-  isFocused = false;
+  isInputFocused = false;
+  isSelectFocused = false;
 
   queryResults$ = this.searchForm.valueChanges.pipe(
     pluck('stock'),
@@ -52,7 +53,7 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.searchInput);
+    // console.log(this.searchInput);
     this.searchInput.nativeElement.addEventListener(
       'keyup',
       ({ key }: { [key: string]: string }) => {
@@ -65,10 +66,10 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
             document.getElementById('query_results_0')
           );
           // console.log(option);
+          console.log(document.activeElement);
           option.selected = true;
-          this.isFocused = true;
+          this.isSelectFocused = true;
           // console.log(this.isFocused);
-          // console.log(document.activeElement);
         }
       }
     );
@@ -81,13 +82,23 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.router.navigate(['stock', stock, 'summary']);
   }
 
-  onFocus(state: boolean) {
-    this.isFocused = state;
-    const select = document.getElementById('query_results');
+  onInputFocus(state: boolean) {
+    this.isInputFocused = state;
+    console.log(this.isInputFocused);
+    // const select = document.getElementById('query_results');
     // console.log(document.activeElement);
-    if (select && document.activeElement === select) {
-      this.isFocused = true;
-    }
+    // if (select && document.activeElement === select) {
+    //   this.isFocused = true;
+    // }
     // console.log(this.isFocused);
+  }
+
+  onSelectFocus(state: boolean) {
+    this.isSelectFocused = state;
+    console.log(this.isSelectFocused);
+  }
+
+  testFocus() {
+    console.log('test');
   }
 }
