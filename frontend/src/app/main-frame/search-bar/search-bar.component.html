@@ -16,6 +16,7 @@
         class="results results__scrollbar-fix"
         size="5"
         id="query_results"
+        (keydown.enter)="onSubmit()"
       >
         <option
           *ngFor="let result of results; let i = index"

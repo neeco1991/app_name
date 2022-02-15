@@ -16,6 +16,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+
 import { SearchService } from 'src/app/shared/services/search.service';
 
 @Component({
@@ -53,19 +54,21 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     console.log(this.searchInput);
     this.searchInput.nativeElement.addEventListener(
-      'keydown',
+      'keyup',
       ({ key }: { [key: string]: string }) => {
         if (key === 'ArrowDown') {
-          const option = <HTMLOptionElement>(
-            document.getElementById('query_results_0')
-          );
-          console.log(option);
-          option.selected = true;
           const select = <HTMLSelectElement>(
             document.getElementById('query_results')
           );
           select.focus();
-          select.scrollTop = 0;
+          const option = <HTMLOptionElement>(
+            document.getElementById('query_results_0')
+          );
+          // console.log(option);
+          option.selected = true;
+          this.isFocused = true;
+          // console.log(this.isFocused);
+          // console.log(document.activeElement);
         }
       }
     );
@@ -80,5 +83,11 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onFocus(state: boolean) {
     this.isFocused = state;
+    const select = document.getElementById('query_results');
+    // console.log(document.activeElement);
+    if (select && document.activeElement === select) {
+      this.isFocused = true;
+    }
+    // console.log(this.isFocused);
   }
 }
