@@ -8,12 +8,13 @@ import {
 
 type State = { [key: string]: string | number };
 
-export const collapseAnimation = (
+export const booleanTransition = (
+  name: string,
   initialState: State,
   finalState: State,
   milliseconds: number
 ) =>
-  trigger('collapse', [
+  trigger(name, [
     state('false', style(initialState)),
     state('true', style(finalState)),
     transition('false <=> true', animate(milliseconds)),

@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostListener,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -10,19 +9,42 @@ import {
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
+  BehaviorSubject,
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
+  map,
   pluck,
   Subject,
   switchMap,
+  takeUntil,
+  tap,
 } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
+import { booleanTransition } from '../animations';
 
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
+  animations: [
+    booleanTransition(
+      'expand',
+      {
+        backgroundColor: 'var(--color-grey-5)',
+        borderRadius: '100px',
+        width: '90%',
+      },
+      {
+        backgroundColor: 'var(--color-grey-4)',
+        borderRadius: '10px 10px 0px 0px',
+        width: '100%',
+      },
+      200
+    ),
+    booleanTransition('disappear', { opacity: 0 }, { opacity: 1 }, 200),
+  ],
 })
 export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private router: Router, private searchService: SearchService) {}
@@ -34,8 +56,18 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
     results: new FormControl(),
   });
   destroy$ = new Subject<void>();
-  isInputFocused = false;
-  isSelectFocused = false;
+  isInputFocused$ = new BehaviorSubject<boolean>(false);
+  isSelectFocused$ = new BehaviorSubject<boolean>(false);
+
+  isSearchBarFocused$ = combineLatest([
+    this.isInputFocused$,
+    this.isSelectFocused$,
+  ]).pipe(
+    takeUntil(this.destroy$),
+    map(([input, select]) => input || select),
+    tap(console.log)
+  );
+  // .subscribe();
 
   queryResults$ = this.searchForm.valueChanges.pipe(
     pluck('stock'),
@@ -53,7 +85,6 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // console.log(this.searchInput);
     this.searchInput.nativeElement.addEventListener(
       'keyup',
       ({ key }: { [key: string]: string }) => {
@@ -65,11 +96,7 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
           const option = <HTMLOptionElement>(
             document.getElementById('query_results_0')
           );
-          // console.log(option);
-          console.log(document.activeElement);
           option.selected = true;
-          this.isSelectFocused = true;
-          // console.log(this.isFocused);
         }
       }
     );
@@ -77,28 +104,15 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onSubmit() {
     console.log(this.searchForm.value);
-    // const { stock } = this.searchForm.value;
-    // this.searchForm.reset();
-    // this.router.navigate(['stock', stock, 'summary']);
   }
 
   onInputFocus(state: boolean) {
-    this.isInputFocused = state;
-    console.log(this.isInputFocused);
-    // const select = document.getElementById('query_results');
-    // console.log(document.activeElement);
-    // if (select && document.activeElement === select) {
-    //   this.isFocused = true;
-    // }
-    // console.log(this.isFocused);
+    setTimeout(() => {
+      this.isInputFocused$.next(state);
+    });
   }
 
   onSelectFocus(state: boolean) {
-    this.isSelectFocused = state;
-    console.log(this.isSelectFocused);
-  }
-
-  testFocus() {
-    console.log('test');
+    this.isSelectFocused$.next(state);
   }
 }

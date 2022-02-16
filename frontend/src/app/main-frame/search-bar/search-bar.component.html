@@ -1,4 +1,4 @@
-<div class="stock-search" on-focus="testFocus()">
+<div class="stock-search">
   <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search">
     <input
       #searchInput
@@ -8,6 +8,7 @@
       placeholder="Search stocks"
       (focus)="onInputFocus(true)"
       (blur)="onInputFocus(false)"
+      [@expand]="isSearchBarFocused$ | async"
     />
 
     <div *ngIf="queryResults$ | async as results" style="width: 100%">

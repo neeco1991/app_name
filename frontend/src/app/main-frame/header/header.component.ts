@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { collapseAnimation } from '../animations';
+import { booleanTransition } from '../animations';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   animations: [
-    collapseAnimation(
+    booleanTransition(
+      'collapse',
       { width: '0', visibility: 'hidden' },
       { width: '25rem', visibility: 'visible' },
       200
