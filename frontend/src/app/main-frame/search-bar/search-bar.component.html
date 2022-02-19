@@ -14,12 +14,14 @@
     <div *ngIf="queryResults$ | async as results" style="width: 100%">
       <select
         formControlName="results"
+        *ngIf="isSearchBarFocused$ | async"
         class="results results__scrollbar-fix"
         size="5"
         id="query_results"
         (keydown.enter)="onSubmit()"
         (focus)="onSelectFocus(true)"
         (blur)="onSelectFocus(false)"
+        [@inOutAnimation]
       >
         <option
           *ngFor="let result of results; let i = index"

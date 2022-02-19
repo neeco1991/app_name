@@ -1,4 +1,13 @@
 import {
+  animate,
+  keyframes,
+  sequence,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
   AfterViewInit,
   Component,
   ElementRef,
@@ -13,7 +22,9 @@ import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
+  of,
   pluck,
   Subject,
   switchMap,
@@ -29,21 +40,33 @@ import { booleanTransition } from '../animations';
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
   animations: [
-    booleanTransition(
-      'expand',
-      {
-        backgroundColor: 'var(--color-grey-5)',
-        borderRadius: '100px',
-        width: '90%',
-      },
-      {
-        backgroundColor: 'var(--color-grey-4)',
-        borderRadius: '10px 10px 0px 0px',
-        width: '100%',
-      },
-      200
-    ),
-    booleanTransition('disappear', { opacity: 0 }, { opacity: 1 }, 200),
+    trigger('expand', [
+      state(
+        'false',
+        style({
+          backgroundColor: 'var(--color-grey-5)',
+          borderRadius: '100px',
+          width: '90%',
+        })
+      ),
+      state(
+        'true',
+        style({
+          backgroundColor: 'var(--color-grey-4)',
+          borderRadius: '10px 10px 0px 0px',
+          width: '100%',
+        })
+      ),
+      transition('false => true', animate('0.2s')),
+      transition('true => false', animate('0.2s 0.2s')),
+    ]),
+    trigger('inOutAnimation', [
+      transition(':enter', [
+        style({ height: 0 }),
+        animate('0.2s 0.2s', style({})),
+      ]),
+      transition(':leave', [style({}), animate('0.2s', style({ height: 0 }))]),
+    ]),
   ],
 })
 export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -60,19 +83,18 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   isSelectFocused$ = new BehaviorSubject<boolean>(false);
 
   isSearchBarFocused$ = combineLatest([
-    this.isInputFocused$,
-    this.isSelectFocused$,
+    this.isInputFocused$.pipe(distinctUntilChanged()),
+    this.isSelectFocused$.pipe(distinctUntilChanged()),
   ]).pipe(
     takeUntil(this.destroy$),
-    map(([input, select]) => input || select),
-    tap(console.log)
+    map(([input, select]) => input || select)
   );
-  // .subscribe();
 
   queryResults$ = this.searchForm.valueChanges.pipe(
     pluck('stock'),
     debounceTime(300),
     distinctUntilChanged(),
+    filter((q) => !!q),
     switchMap((q: string) => this.searchService.search({ q })),
     pluck('result')
   );
@@ -103,7 +125,13 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit() {
-    console.log(this.searchForm.value);
+    console.log(this.searchForm);
+    const { results } = this.searchForm.value;
+    if (results) {
+      this.isInputFocused$.next(false);
+      this.isSelectFocused$.next(false);
+      this.router.navigate(['stock', results, 'summary']);
+    }
   }
 
   onInputFocus(state: boolean) {

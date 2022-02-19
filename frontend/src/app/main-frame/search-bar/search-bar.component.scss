@@ -32,6 +32,10 @@
     height: 5rem;
     font-size: 2.5rem;
 
+    &:checked {
+      background-color: var(--color-grey-4);
+    }
+
     &:not(:last-child) {
       border-bottom: 1px solid var(--color-primary-dark-2);
     }
@@ -42,8 +46,9 @@
   }
 
   &__scrollbar-fix {
-    height: 24.8rem;
+    // height: 24.8rem;
     overflow: auto;
+    margin: 0 auto;
 
     &::-webkit-scrollbar {
       overflow: auto;
