@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-stock-title',
   templateUrl: './stock-title.component.html',
-  styleUrls: ['./stock-title.component.scss']
+  styleUrls: ['./stock-title.component.scss'],
 })
 export class StockTitleComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  @Input() tiker: string;
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

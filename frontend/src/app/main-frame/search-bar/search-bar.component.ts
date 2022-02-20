@@ -10,7 +10,6 @@ import {
   Component,
   ElementRef,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -60,7 +59,7 @@ import { inOutAnimation } from '../../shared/animations/animations';
     inOutAnimation(0.2, { enter: 0.2 }),
   ],
 })
-export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SearchBarComponent implements OnDestroy, AfterViewInit {
   constructor(private router: Router, private searchService: SearchService) {}
 
   @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
@@ -92,8 +91,6 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
     tap((results) => this.searchForm.patchValue({ result: results[0].symbol }))
   );
 
-  ngOnInit(): void {}
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -116,6 +113,7 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   onSubmit() {
     const { result } = this.searchForm.value;
     if (result) {
+      this.searchForm.patchValue({ stock: '' });
       this.isInputFocused$.next(false);
       this.isSelectFocused$.next(false);
       this.router.navigate(['stock', result, 'summary']);
