@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
-interface StockSearch {
+export interface StockSearch {
   description: string;
   symbol: string;
   displaySymbol: string;

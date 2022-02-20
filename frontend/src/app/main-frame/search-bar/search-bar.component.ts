@@ -1,7 +1,5 @@
 import {
   animate,
-  keyframes,
-  sequence,
   state,
   style,
   transition,
@@ -24,7 +22,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  of,
   pluck,
   Subject,
   switchMap,
@@ -33,7 +30,7 @@ import {
 } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
-import { booleanTransition } from '../animations';
+import { inOutAnimation } from '../../shared/animations/animations';
 
 @Component({
   selector: 'app-search-bar',
@@ -60,13 +57,7 @@ import { booleanTransition } from '../animations';
       transition('false => true', animate('0.2s')),
       transition('true => false', animate('0.2s 0.2s')),
     ]),
-    trigger('inOutAnimation', [
-      transition(':enter', [
-        style({ height: 0 }),
-        animate('0.2s 0.2s', style({})),
-      ]),
-      transition(':leave', [style({}), animate('0.2s', style({ height: 0 }))]),
-    ]),
+    inOutAnimation(0.2, { enter: 0.2 }),
   ],
 })
 export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -76,7 +67,7 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   searchForm: FormGroup = new FormGroup({
     stock: new FormControl(),
-    results: new FormControl(),
+    result: new FormControl(),
   });
   destroy$ = new Subject<void>();
   isInputFocused$ = new BehaviorSubject<boolean>(false);
@@ -91,12 +82,14 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
   );
 
   queryResults$ = this.searchForm.valueChanges.pipe(
+    takeUntil(this.destroy$),
     pluck('stock'),
     debounceTime(300),
     distinctUntilChanged(),
     filter((q) => !!q),
     switchMap((q: string) => this.searchService.search({ q })),
-    pluck('result')
+    pluck('result'),
+    tap((results) => this.searchForm.patchValue({ result: results[0].symbol }))
   );
 
   ngOnInit(): void {}
@@ -115,22 +108,17 @@ export class SearchBarComponent implements OnInit, OnDestroy, AfterViewInit {
             document.getElementById('query_results')
           );
           select.focus();
-          const option = <HTMLOptionElement>(
-            document.getElementById('query_results_0')
-          );
-          option.selected = true;
         }
       }
     );
   }
 
   onSubmit() {
-    console.log(this.searchForm);
-    const { results } = this.searchForm.value;
-    if (results) {
+    const { result } = this.searchForm.value;
+    if (result) {
       this.isInputFocused$.next(false);
       this.isSelectFocused$.next(false);
-      this.router.navigate(['stock', results, 'summary']);
+      this.router.navigate(['stock', result, 'summary']);
     }
   }
 

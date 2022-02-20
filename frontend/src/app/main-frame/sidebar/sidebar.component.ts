@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { booleanTransition } from '../animations';
+import { booleanTransition } from '../../shared/animations/animations';
 
 @Component({
   selector: 'app-sidebar',

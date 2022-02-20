@@ -13,7 +13,7 @@
 
     <div *ngIf="queryResults$ | async as results" style="width: 100%">
       <select
-        formControlName="results"
+        formControlName="result"
         *ngIf="isSearchBarFocused$ | async"
         class="results results__scrollbar-fix"
         size="5"
