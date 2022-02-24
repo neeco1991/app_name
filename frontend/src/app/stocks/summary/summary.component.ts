@@ -12,7 +12,7 @@ export class SummaryComponent implements OnDestroy {
 
   destroyed$ = new Subject<void>();
 
-  tiker = this.route.params.pipe(takeUntil(this.destroyed$), pluck('tiker'));
+  symbol = this.route.params.pipe(takeUntil(this.destroyed$), pluck('symbol'));
 
   ngOnDestroy(): void {
     this.destroyed$.next();
