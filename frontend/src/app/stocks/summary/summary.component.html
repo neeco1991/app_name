@@ -1,7 +1,15 @@
-<div class="mt-10">
-  <app-stock-title [tiker]="'test'"></app-stock-title>
+<div class="relative flex flex-col justify-center items-center">
+  <div *ngIf="tiker$ | async as tiker" class="mt-10">
+    <app-stock-title [tiker]="tiker"></app-stock-title>
+  </div>
+
+  <div *ngIf="loading$ | async; else stockPage">
+    <app-loading></app-loading>
+  </div>
 </div>
 
-<div *ngIf="loading$ | async">
-  <app-loading></app-loading>
-</div>
+<ng-template #stockPage>
+  <div *ngIf="profile$ | async as profile">
+    <p class="text-5xl text-gray-500">{{ profile.name }}</p>
+  </div>
+</ng-template>
