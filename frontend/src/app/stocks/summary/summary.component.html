@@ -1,3 +1,7 @@
 <div class="mt-10">
   <app-stock-title [tiker]="'test'"></app-stock-title>
 </div>
+
+<div *ngIf="loading$ | async">
+  <app-loading></app-loading>
+</div>

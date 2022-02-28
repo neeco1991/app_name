@@ -28,7 +28,7 @@ const _stockReducer = createReducer(
   initialState,
   on(StockActions.fetchStock, (state) => ({
     ...state,
-    loading: false,
+    loading: true,
   })),
   on(StockActions.selectStock, (state, { ticker, name, exchange }) => ({
     ...state,

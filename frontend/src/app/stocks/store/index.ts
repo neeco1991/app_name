@@ -12,3 +12,4 @@ export const reducers: ActionReducerMap<StockState> = {
 };
 
 export * from './stocks.reducer';
+export * from './stocks.actions';

@@ -19,7 +19,6 @@ export class StocksEffect {
   fetchStock$ = createEffect(() =>
     this.actions$.pipe(
       ofType(StocksActions.fetchStock),
-      tap(console.log),
       switchMap(({ symbol }) =>
         this.searchSrv.search({ q: symbol }).pipe(
           map(({ result }) => {
