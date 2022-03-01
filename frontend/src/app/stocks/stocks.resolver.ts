@@ -19,6 +19,6 @@ export class StocksResolver implements Resolve<void> {
     state: RouterStateSnapshot
   ): void | Observable<void> | Promise<void> {
     const { symbol } = route.params;
-    this.store.dispatch(StockActions.fetchStock({ symbol }));
+    this.store.dispatch(StockActions.fetchProfile({ symbol }));
   }
 }

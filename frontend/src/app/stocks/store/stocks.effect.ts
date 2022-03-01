@@ -5,7 +5,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
+
 // import * as fromApp from '../../store/app.reducer';
+import { splitSymbol } from 'src/app/shared/utils/stocks';
 import * as StocksActions from './stocks.actions';
 
 @Injectable()
@@ -18,23 +20,21 @@ export class StocksEffect {
 
   fetchStock$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(StocksActions.fetchStock),
+      ofType(StocksActions.fetchProfile),
       switchMap(({ symbol }) =>
         this.searchSrv.search({ q: symbol }).pipe(
           map(({ result }) => {
             const { symbol, description } = result[0];
-            const splitted = symbol.split('.');
-            const ticker = splitted[0];
-            const exchange = splitted.length > 1 ? splitted[1] : 'USA';
+            const [ticker, exchange] = splitSymbol(symbol);
 
-            return StocksActions.selectStock({
+            return StocksActions.fetchProfileSuccess({
               ticker,
               exchange,
               name: description,
             });
           }),
           catchError((error: HttpErrorResponse) =>
-            of(StocksActions.fetchStockError({ error: error.message }))
+            of(StocksActions.fetchProfileError({ error: error.message }))
           )
         )
       )
