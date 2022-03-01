@@ -4,7 +4,9 @@
   </div>
 
   <div *ngIf="loading$ | async; else stockPage">
-    <app-loading></app-loading>
+    <app-page-overlay>
+      <app-loading></app-loading>
+    </app-page-overlay>
   </div>
 </div>
 
