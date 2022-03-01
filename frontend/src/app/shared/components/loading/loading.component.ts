@@ -7,8 +7,4 @@ import { Component } from '@angular/core';
 })
 export class LoadingComponent {
   constructor() {}
-
-  ngOnInit() {
-    console.log('spinner init');
-  }
 }
