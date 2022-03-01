@@ -21,7 +21,7 @@ interface Query {
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  private baseUrl = `${environment.backend.url}search`;
+  private baseUrl = `${environment.backend.url}/search`;
   constructor(private http: HttpClient) {}
 
   search(query?: Query): Observable<StockSearchResponse> {

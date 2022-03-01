@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
-
+import { StockService } from 'src/app/shared/services/stocks.service';
 // import * as fromApp from '../../store/app.reducer';
 import { splitSymbol } from 'src/app/shared/utils/stocks';
 import * as StocksActions from './stocks.actions';
@@ -15,7 +15,8 @@ export class StocksEffect {
   constructor(
     private actions$: Actions,
     // private store: Store<fromApp.AppState>,
-    private searchSrv: SearchService
+    private searchSrv: SearchService,
+    private stockSrv: StockService
   ) {}
 
   fetchStock$ = createEffect(() =>
@@ -40,4 +41,13 @@ export class StocksEffect {
       )
     )
   );
+
+  // fetchCandles$ = createEffect(() =>
+  //         this.actions$.pipe(
+  //           ofType(StocksActions.fetchCandles),
+  //           switchMap(({symbol})=>
+  //             this.stockSrv.candles({q:symbol}).pipe()
+  //           )
+  //         )
+  // )
 }
