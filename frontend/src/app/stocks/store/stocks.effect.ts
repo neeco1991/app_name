@@ -47,7 +47,7 @@ export class StocksEffect {
       ofType(StocksActions.fetchCandles),
       switchMap(({ symbol, request_from, request_to }) =>
         this.stockSrv
-          .candles({ q: symbol, start: request_from, end: request_to })
+          .candles({ symbol, start: request_from, end: request_to })
           .pipe(
             map(({ h, l, c, o, v, t, s }) => {
               if (s === 'ok') {

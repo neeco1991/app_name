@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { getUNIXTimestamp } from '../utils/dates';
 
 interface StockCandlesResponse {
   c: number[];
@@ -14,7 +15,7 @@ interface StockCandlesResponse {
 }
 
 interface CandlesQuery {
-  q: string;
+  symbol: string;
   start?: Date | undefined;
   end?: Date | undefined;
 }
@@ -28,11 +29,13 @@ export class StockService {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const params = {
-      q: query.q,
-      start: query.start
-        ? query.start.getTime() / 1000
-        : oneYearAgo.getTime() / 1000,
-      end: query.end ? query.end.getTime() / 1000 : new Date().getTime() / 1000,
+      symbol: query.symbol,
+      timestamp_from: query.start
+        ? getUNIXTimestamp(query.start)
+        : getUNIXTimestamp(oneYearAgo),
+      timestamp_to: query.end
+        ? getUNIXTimestamp(query.end)
+        : getUNIXTimestamp(new Date()),
     };
 
     return this.http.get<StockCandlesResponse>(`${this.baseUrl}/candles`, {

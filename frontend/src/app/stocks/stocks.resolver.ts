@@ -20,5 +20,12 @@ export class StocksResolver implements Resolve<void> {
   ): void | Observable<void> | Promise<void> {
     const { symbol } = route.params;
     this.store.dispatch(StockActions.fetchProfile({ symbol }));
+    this.store.dispatch(
+      StockActions.fetchCandles({
+        symbol,
+        request_from: undefined,
+        request_to: undefined,
+      })
+    );
   }
 }
