@@ -23,7 +23,11 @@ export const fetchProfileError = createAction(
 
 export const fetchCandles = createAction(
   FETCH_CANDLES,
-  props<{ symbol: string }>()
+  props<{
+    symbol: string;
+    request_from: Date | undefined;
+    request_to: Date | undefined;
+  }>()
 );
 export const fetchCandlesSuccess = createAction(
   FETCH_CANDLES_SUCCESS,

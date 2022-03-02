@@ -16,7 +16,7 @@ interface StockSearchResponse {
 }
 
 interface Query {
-  [param: string]: string;
+  q: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -24,9 +24,13 @@ export class SearchService {
   private baseUrl = `${environment.backend.url}/search`;
   constructor(private http: HttpClient) {}
 
-  search(query?: Query): Observable<StockSearchResponse> {
+  search(query: Query): Observable<StockSearchResponse> {
+    const params = {
+      q: query.q ? query.q : '',
+    };
+
     return this.http.get<StockSearchResponse>(`${this.baseUrl}`, {
-      params: query,
+      params,
     });
   }
 }

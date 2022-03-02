@@ -15,6 +15,8 @@ export interface State {
   candles: {
     error: string;
     loading: boolean;
+    timestamp_from: Date | null;
+    timestamp_to: Date | null;
     close: number[];
     high: number[];
     low: number[];
@@ -37,6 +39,8 @@ const initialState: State = {
   candles: {
     loading: false,
     error: '',
+    timestamp_from: null,
+    timestamp_to: null,
     close: [],
     high: [],
     low: [],
@@ -79,12 +83,14 @@ const _stockReducer = createReducer(
       error,
     },
   })),
-  on(StockActions.fetchCandles, (state) => ({
+  on(StockActions.fetchCandles, (state, { request_from, request_to }) => ({
     ...state,
     loading: true,
     candles: {
       ...state.candles,
       loading: true,
+      request_from,
+      request_to,
     },
   })),
   on(

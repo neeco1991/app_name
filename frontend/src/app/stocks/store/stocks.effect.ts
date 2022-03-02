@@ -19,7 +19,7 @@ export class StocksEffect {
     private stockSrv: StockService
   ) {}
 
-  fetchStock$ = createEffect(() =>
+  fetchProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(StocksActions.fetchProfile),
       switchMap(({ symbol }) =>
@@ -42,12 +42,32 @@ export class StocksEffect {
     )
   );
 
-  // fetchCandles$ = createEffect(() =>
-  //         this.actions$.pipe(
-  //           ofType(StocksActions.fetchCandles),
-  //           switchMap(({symbol})=>
-  //             this.stockSrv.candles({q:symbol}).pipe()
-  //           )
-  //         )
-  // )
+  fetchCandles$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(StocksActions.fetchCandles),
+      switchMap(({ symbol, request_from, request_to }) =>
+        this.stockSrv
+          .candles({ q: symbol, start: request_from, end: request_to })
+          .pipe(
+            map(({ h, l, c, o, v, t, s }) => {
+              if (s === 'ok') {
+                const time = t.map((timestamp) => new Date(timestamp * 1000));
+                return StocksActions.fetchCandlesSuccess({
+                  close: c,
+                  high: h,
+                  low: l,
+                  open: o,
+                  volume: v,
+                  time,
+                });
+              }
+              return StocksActions.fetchCandlesError({ error: s });
+            }),
+            catchError((error: HttpErrorResponse) =>
+              of(StocksActions.fetchCandlesError({ error: error.message }))
+            )
+          )
+      )
+    )
+  );
 }
