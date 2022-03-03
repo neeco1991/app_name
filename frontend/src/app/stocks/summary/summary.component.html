@@ -14,4 +14,7 @@
   <div *ngIf="profile$ | async as profile">
     <p class="text-5xl text-gray-500">{{ profile.name }}</p>
   </div>
+  <div *ngIf="candles$ | async as candles" class="w-7/12">
+    <app-line-candle-chart [data]="candles"></app-line-candle-chart>
+  </div>
 </ng-template>

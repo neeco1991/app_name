@@ -2,27 +2,33 @@ import { Action, createReducer, on } from '@ngrx/store';
 
 import * as StockActions from './stocks.actions';
 
+export interface Profile {
+  ticker: string;
+  exchange: string;
+  name: string;
+}
+
+export interface Candles {
+  close: number[];
+  high: number[];
+  low: number[];
+  open: number[];
+  time: Date[];
+  volume: number[];
+}
+
 export interface State {
   loading: boolean;
   errors: boolean;
-  profile: {
+  profile: Profile & {
     error: string;
     loading: boolean;
-    ticker: string;
-    exchange: string;
-    name: string;
   };
-  candles: {
+  candles: Candles & {
     error: string;
     loading: boolean;
     timestamp_from: Date | null;
     timestamp_to: Date | null;
-    close: number[];
-    high: number[];
-    low: number[];
-    open: number[];
-    time: Date[];
-    volume: number[];
   };
 }
 
