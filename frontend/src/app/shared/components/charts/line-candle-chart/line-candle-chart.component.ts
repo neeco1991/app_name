@@ -37,6 +37,9 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
 
   private root: am5.Root;
 
+  private upColor = '#76b041';
+  private downColor = '#e4572e';
+
   // Run the function only in the browser
   browserOnly(f: () => void) {
     if (isPlatformBrowser(this.platformId)) {
@@ -64,6 +67,7 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
         wheelY: 'zoomX',
         layout: root.verticalLayout,
         maxTooltipDistance: 0,
+        // tooltip: am5.Tooltip.new(root, {}),
       })
     );
 
@@ -76,10 +80,10 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
 
     // Create X-Axis
     let xAxis = chart.xAxes.push(
-      am5xy.DateAxis.new(root, {
+      am5xy.GaplessDateAxis.new(root, {
         baseInterval: { timeUnit: 'day', count: 1 },
         renderer: am5xy.AxisRendererX.new(root, {
-          minGridDistance: 20,
+          minGridDistance: 50,
         }),
       })
     );
@@ -90,31 +94,89 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
         name: 'Series',
         xAxis: xAxis,
         yAxis: yAxis,
+
         openValueYField: 'open',
         highValueYField: 'high',
         lowValueYField: 'low',
         valueYField: 'close',
         valueXField: 'date',
-        tooltip: am5.Tooltip.new(root, {}),
+        tooltip: am5.Tooltip.new(root, {
+          autoTextColor: false,
+          // showTooltipOn: 'always',
+          labelText: `Open: [{color}]{openValueY}[/] High: [{color}]{highValueY}[/] Low: [{color}]{lowValueY}[/] Close: [{color}]{valueY}[/] Change: [{color}]{percentage}[/]`,
+        }),
       })
     );
 
     series.columns.template.states.create('riseFromOpen', {
-      fill: am5.color(0x76b041),
-      stroke: am5.color(0x76b041),
+      fill: am5.color(this.upColor),
+      stroke: am5.color(this.upColor),
     });
     series.columns.template.states.create('dropFromOpen', {
-      fill: am5.color(0xe4572e),
-      stroke: am5.color(0xe4572e),
+      fill: am5.color(this.downColor),
+      stroke: am5.color(this.downColor),
     });
 
-    series
-      .get('tooltip')
-      ?.label.set(
-        'text',
-        '[bold]{valueX.formatDate()}[/]\nOpen: {openValueY}\nHigh: {highValueY}\nLow: {lowValueY}\nClose: {valueY}'
-      );
-    series.data.setAll(this.data);
+    // chart.set('tooltipText', 'test {series.valueY}');
+
+    // let tooltip = am5.Tooltip.new(root, {});
+
+    // tooltip.get('background')?.setAll({
+    //   fill: am5.color(0xeeeeee),
+    // });
+
+    // chart.set('tooltip', tooltip);
+
+    // chart.set('tooltipText', 'test');
+
+    const seriesTooltip = series.get('tooltip');
+    seriesTooltip?.get('background')?.setAll({
+      fillOpacity: 0,
+      strokeOpacity: 0,
+    });
+
+    seriesTooltip?.label.setAll({
+      fill: am5.color(0x000000),
+    });
+
+    // chart.get('tooltip')?.label.set('text', 'test');
+
+    // const tooltip = chart.get('tooltip');
+    // tooltip?.label.set(
+    //   'text',
+    //   '[bold]{valueX.formatDate()}[/]\nOpen: {openValueY}\nHigh: {highValueY}\nLow: {lowValueY}\nClose: {valueY}'
+    // );
+    // // tooltip?.set('opacity', 0.1);
+
+    seriesTooltip?.adapters.add('y', function (y, target) {
+      return seriesTooltip.height() / 2 + 5;
+    });
+
+    seriesTooltip?.adapters.add('x', function (x, target) {
+      return seriesTooltip.width() / 2 + 42;
+    });
+
+    // andrebbero tornate così dal BE
+    const additionalData = this.data.map((candle, index) => {
+      if (index === 0) {
+        return { percentage: '---', color: 0x000000 };
+      }
+      const change = candle.close / this.data[index - 1].close - 1;
+      let color = this.downColor;
+      let addPlus = '';
+      if (change > 0) {
+        color = this.upColor;
+        addPlus = '+';
+      }
+      return { percentage: `${addPlus}${(change * 100).toFixed(2)}%`, color };
+    });
+
+    series.data.setAll(
+      this.data.map((day, index) => ({
+        ...day,
+        ...additionalData[index],
+      }))
+    );
 
     // Add cursor
     chart.set(
