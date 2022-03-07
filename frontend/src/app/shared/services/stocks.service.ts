@@ -26,13 +26,13 @@ export class StockService {
   constructor(private http: HttpClient) {}
 
   candles(query: CandlesQuery): Observable<StockCandlesResponse> {
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const oneHundredYearsAgo = new Date();
+    oneHundredYearsAgo.setFullYear(oneHundredYearsAgo.getFullYear() - 100);
     const params = {
       symbol: query.symbol,
       timestamp_from: query.start
         ? getUNIXTimestamp(query.start)
-        : getUNIXTimestamp(oneYearAgo),
+        : getUNIXTimestamp(oneHundredYearsAgo),
       timestamp_to: query.end
         ? getUNIXTimestamp(query.end)
         : getUNIXTimestamp(new Date()),

@@ -22,6 +22,8 @@ export interface Am5Candle {
   close: number;
 }
 
+type Period = '1w' | '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | 'ytd' | 'all';
+
 @Component({
   selector: 'app-line-candle-chart',
   templateUrl: './line-candle-chart.component.html',
@@ -36,9 +38,12 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
   @Input() data: Am5Candle[];
 
   private root: am5.Root;
+  private series: any;
 
   private upColor = '#76b041';
   private downColor = '#e4572e';
+
+  private period: Period = '1y';
 
   // Run the function only in the browser
   browserOnly(f: () => void) {
@@ -52,11 +57,11 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // Chart code goes in here
     this.browserOnly(() => {
-      this.root = this.createChart();
+      this.root = this.candleChart();
     });
   }
 
-  createChart() {
+  candleChart() {
     let root = am5.Root.new('chartdiv');
 
     root.setThemes([am5themes_Animated.new(root)]);
@@ -89,7 +94,7 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
     );
 
     // Create series
-    let series = chart.series.push(
+    this.series = chart.series.push(
       am5xy.CandlestickSeries.new(root, {
         name: 'Series',
         xAxis: xAxis,
@@ -108,11 +113,11 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
       })
     );
 
-    series.columns.template.states.create('riseFromOpen', {
+    this.series.columns.template.states.create('riseFromOpen', {
       fill: am5.color(this.upColor),
       stroke: am5.color(this.upColor),
     });
-    series.columns.template.states.create('dropFromOpen', {
+    this.series.columns.template.states.create('dropFromOpen', {
       fill: am5.color(this.downColor),
       stroke: am5.color(this.downColor),
     });
@@ -129,7 +134,7 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
 
     // chart.set('tooltipText', 'test');
 
-    const seriesTooltip = series.get('tooltip');
+    const seriesTooltip = this.series.get('tooltip');
     seriesTooltip?.get('background')?.setAll({
       fillOpacity: 0,
       strokeOpacity: 0,
@@ -148,35 +153,16 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
     // );
     // // tooltip?.set('opacity', 0.1);
 
-    seriesTooltip?.adapters.add('y', function (y, target) {
+    seriesTooltip?.adapters.add('y', function (y: any, target: any) {
       return seriesTooltip.height() / 2 + 5;
     });
 
-    seriesTooltip?.adapters.add('x', function (x, target) {
+    seriesTooltip?.adapters.add('x', function (y: any, target: any) {
       return seriesTooltip.width() / 2 + 42;
     });
 
     // andrebbero tornate così dal BE
-    const additionalData = this.data.map((candle, index) => {
-      if (index === 0) {
-        return { percentage: '---', color: 0x000000 };
-      }
-      const change = candle.close / this.data[index - 1].close - 1;
-      let color = this.downColor;
-      let addPlus = '';
-      if (change > 0) {
-        color = this.upColor;
-        addPlus = '+';
-      }
-      return { percentage: `${addPlus}${(change * 100).toFixed(2)}%`, color };
-    });
-
-    series.data.setAll(
-      this.data.map((day, index) => ({
-        ...day,
-        ...additionalData[index],
-      }))
-    );
+    this.pushData();
 
     // Add cursor
     chart.set(
@@ -202,6 +188,67 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
     );
 
     return root;
+  }
+
+  setPeriod(period: Period) {
+    this.period = period;
+    this.pushData();
+  }
+
+  private pushData() {
+    const additionalData = this.data.map((candle, index) => {
+      if (index === 0) {
+        return { percentage: '---', color: 0x000000 };
+      }
+      const change = candle.close / this.data[index - 1].close - 1;
+      let color = this.downColor;
+      let addPlus = '';
+      if (change > 0) {
+        color = this.upColor;
+        addPlus = '+';
+      }
+      return { percentage: `${addPlus}${(change * 100).toFixed(2)}%`, color };
+    });
+
+    this.series.data.setAll(
+      this.filterWIthPeriod(this.data).map((day, index) => ({
+        ...day,
+        ...additionalData[index],
+      }))
+    );
+  }
+
+  private filterWIthPeriod(data: Am5Candle[]): Am5Candle[] {
+    if (this.period === 'all') {
+      return data;
+    }
+    const startDate = new Date();
+    if (this.period === 'ytd') {
+      startDate.setMonth(0);
+      startDate.setDate(1);
+    } else if (this.period.endsWith('y')) {
+      const numberOfYears = +this.period[0];
+      startDate.setFullYear(startDate.getFullYear() - numberOfYears);
+    } else if (this.period.endsWith('m')) {
+      const numberOfMonths = +this.period[0];
+      const year =
+        startDate.getMonth() - numberOfMonths >= 0
+          ? startDate.getFullYear()
+          : startDate.getFullYear() - 1;
+      startDate.setMonth(startDate.getMonth() - numberOfMonths);
+      startDate.setFullYear(year);
+    } else if (this.period.endsWith('w')) {
+      startDate.setDate(startDate.getDate() - 7);
+    }
+
+    let lastValueIndex = data.length;
+    while (
+      data[lastValueIndex - 1].date > startDate.getTime() &&
+      lastValueIndex > 1
+    )
+      lastValueIndex--;
+
+    return data.slice(lastValueIndex);
   }
 
   ngOnDestroy() {
