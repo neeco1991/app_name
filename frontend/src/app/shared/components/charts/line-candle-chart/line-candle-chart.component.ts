@@ -19,6 +19,10 @@ export class LineCandleChartComponent {
     this.period = period;
   }
 
+  setGraphType(graphType: GraphType) {
+    this.graphType = graphType;
+  }
+
   filterWIthPeriod(data: Am5Candle[]): Am5Candle[] {
     if (this.period === 'all') {
       return data;

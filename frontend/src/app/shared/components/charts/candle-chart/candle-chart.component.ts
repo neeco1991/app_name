@@ -4,8 +4,10 @@ import {
   Inject,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   PLATFORM_ID,
+  SimpleChanges,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -27,7 +29,9 @@ export interface Am5Candle {
   templateUrl: './candle-chart.component.html',
   styleUrls: ['./candle-chart.component.scss'],
 })
-export class CandleChartComponent implements AfterViewInit, OnDestroy {
+export class CandleChartComponent
+  implements AfterViewInit, OnDestroy, OnChanges
+{
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private zone: NgZone
@@ -46,6 +50,12 @@ export class CandleChartComponent implements AfterViewInit, OnDestroy {
     this.browserOnly(() => {
       this.root = this.candleChart();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'].previousValue) {
+      this.pushData();
+    }
   }
 
   ngOnDestroy() {
@@ -142,7 +152,7 @@ export class CandleChartComponent implements AfterViewInit, OnDestroy {
     });
 
     seriesTooltip?.adapters.add('x', function (y: any, target: any) {
-      return seriesTooltip.width() / 2 + 42;
+      return chart.width() / 2;
     });
 
     // andrebbero tornate così dal BE

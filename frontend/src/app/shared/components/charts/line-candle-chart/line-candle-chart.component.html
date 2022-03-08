@@ -1,5 +1,7 @@
 <div class="relative">
-  <app-candle-chart [data]="filterWIthPeriod(data)"></app-candle-chart>
+  <div *ngIf="graphType === 'candle'">
+    <app-candle-chart [data]="filterWIthPeriod(data)"></app-candle-chart>
+  </div>
   <div class="absolute mt-[490px] ml-[71px]">
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
@@ -69,6 +71,7 @@
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full mr-2"
       [ngClass]="{ 'bg-blue-700': graphType === 'candle' }"
+      (click)="setGraphType('candle')"
     >
       <img
         src="assets/icons/candle-chart-filled.svg"
@@ -79,6 +82,7 @@
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full"
       [ngClass]="{ 'bg-blue-700': graphType === 'line' }"
+      (click)="setGraphType('line')"
     >
       <img
         src="assets/icons/line-chart-1.svg"
