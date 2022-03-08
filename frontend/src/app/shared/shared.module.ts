@@ -5,6 +5,8 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { PageOverlayComponent } from './components/page-overlay/page-overlay.component';
 import { LineCandleChartComponent } from './components/charts/line-candle-chart/line-candle-chart.component';
+import { CandleChartComponent } from './components/charts/candle-chart/candle-chart.component';
+import { LineChartComponent } from './components/charts/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +14,8 @@ import { LineCandleChartComponent } from './components/charts/line-candle-chart/
     LoadingComponent,
     PageOverlayComponent,
     LineCandleChartComponent,
+    CandleChartComponent,
+    LineChartComponent,
   ],
   imports: [CommonModule],
   exports: [

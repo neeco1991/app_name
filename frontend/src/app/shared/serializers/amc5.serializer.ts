@@ -1,5 +1,5 @@
 import { Candles } from 'src/app/stocks/store';
-import { Am5Candle } from '../components/charts/line-candle-chart/line-candle-chart.component';
+import { Am5Candle } from '../components/charts/candle-chart/candle-chart.component';
 
 export const serialize = (data: Candles): Am5Candle[] => {
   const candles: Am5Candle[] = [];
