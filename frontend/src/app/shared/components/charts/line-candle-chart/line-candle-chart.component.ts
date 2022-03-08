@@ -23,6 +23,7 @@ export interface Am5Candle {
 }
 
 type Period = '1w' | '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | 'ytd' | 'all';
+type GraphType = 'candle' | 'line';
 
 @Component({
   selector: 'app-line-candle-chart',
@@ -43,7 +44,15 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
   private upColor = '#76b041';
   private downColor = '#e4572e';
 
-  private period: Period = '1y';
+  period: Period = '1y';
+  graphType: GraphType = 'candle';
+
+  ngAfterViewInit() {
+    // Chart code goes in here
+    this.browserOnly(() => {
+      this.root = this.candleChart();
+    });
+  }
 
   // Run the function only in the browser
   browserOnly(f: () => void) {
@@ -52,13 +61,6 @@ export class LineCandleChartComponent implements AfterViewInit, OnDestroy {
         f();
       });
     }
-  }
-
-  ngAfterViewInit() {
-    // Chart code goes in here
-    this.browserOnly(() => {
-      this.root = this.candleChart();
-    });
   }
 
   candleChart() {
