@@ -1,5 +1,11 @@
 import { Component, Input } from '@angular/core';
+import {
+  serializeCandles,
+  serializePoints,
+} from 'src/app/shared/serializers/amc5.serializer';
+import { Candles } from 'src/app/stocks/store';
 import { Am5Candle } from '../candle-chart/candle-chart.component';
+import { Am5Point } from '../line-chart/line-chart.component';
 
 type Period = '1w' | '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | 'ytd' | 'all';
 type GraphType = 'candle' | 'line';
@@ -10,10 +16,10 @@ type GraphType = 'candle' | 'line';
   styleUrls: ['./line-candle-chart.component.scss'],
 })
 export class LineCandleChartComponent {
-  @Input() data: Am5Candle[];
+  @Input() data: Candles;
 
   period: Period = '1y';
-  graphType: GraphType = 'candle';
+  graphType: GraphType = 'line';
 
   setPeriod(period: Period) {
     this.period = period;
@@ -23,7 +29,15 @@ export class LineCandleChartComponent {
     this.graphType = graphType;
   }
 
-  filterWIthPeriod(data: Am5Candle[]): Am5Candle[] {
+  getCandles(): Am5Candle[] {
+    return <Am5Candle[]>this.filterWIthPeriod(serializeCandles(this.data));
+  }
+
+  getPoints(): Am5Point[] {
+    return <Am5Point[]>this.filterWIthPeriod(serializePoints(this.data));
+  }
+
+  filterWIthPeriod(data: Am5Candle[] | Am5Point[]): Am5Candle[] | Am5Point[] {
     if (this.period === 'all') {
       return data;
     }

@@ -46,7 +46,6 @@ export class CandleChartComponent
   private downColor = '#e4572e';
 
   ngAfterViewInit() {
-    // Chart code goes in here
     this.browserOnly(() => {
       this.root = this.candleChart();
     });
@@ -59,7 +58,6 @@ export class CandleChartComponent
   }
 
   ngOnDestroy() {
-    // Clean up chart when the component is removed
     this.browserOnly(() => {
       if (this.root) {
         this.root.dispose();
@@ -67,8 +65,7 @@ export class CandleChartComponent
     });
   }
 
-  // Run the function only in the browser
-  browserOnly(f: () => void) {
+  private browserOnly(f: () => void) {
     if (isPlatformBrowser(this.platformId)) {
       this.zone.runOutsideAngular(() => {
         f();
@@ -76,8 +73,8 @@ export class CandleChartComponent
     }
   }
 
-  candleChart() {
-    let root = am5.Root.new('chartdiv');
+  private candleChart() {
+    let root = am5.Root.new('candlechartdiv');
 
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -155,8 +152,14 @@ export class CandleChartComponent
       return chart.width() / 2;
     });
 
+    chart.set(
+      'scrollbarX',
+      am5.Scrollbar.new(root, {
+        orientation: 'horizontal',
+      })
+    );
+
     // andrebbero tornate così dal BE
-    // this.series.data.setAll(this.data);
     this.pushData();
 
     // Add cursor

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, pluck, Subject, takeUntil, tap } from 'rxjs';
-import { serialize } from 'src/app/shared/serializers/amc5.serializer';
 
 import * as fromApp from '../../store';
 
@@ -36,11 +35,9 @@ export class SummaryComponent implements OnDestroy {
     .select('stock')
     .pipe(takeUntil(this.destroyed$), pluck('profile'));
 
-  candles$ = this.store.select('stock').pipe(
-    takeUntil(this.destroyed$),
-    pluck('candles'),
-    map((candles) => serialize(candles))
-  );
+  candles$ = this.store
+    .select('stock')
+    .pipe(takeUntil(this.destroyed$), pluck('candles'));
 
   ngOnDestroy(): void {
     this.destroyed$.next();
