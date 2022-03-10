@@ -53,7 +53,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'].previousValue) {
-      console.log(this.period);
       this.setScrollbar();
       // this.setColor();
     }
