@@ -39,7 +39,7 @@ export class LineCandleChartComponent {
   }
 
   getCandles(): Am5Candle[] {
-    return <Am5Candle[]>this.filterWIthPeriod(serializeCandles(this.data));
+    return serializeCandles(this.data);
   }
 
   getPoints(): Am5Point[] {

@@ -181,13 +181,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
     );
     chart.set('scrollbarX', scrollbar);
 
-    // let from = new Date();
-    // from.setFullYear(from.getFullYear() - 1);
-    // from =
-    //   from < new Date(this.data[0].date) ? new Date(this.data[0].date) : from;
-    // this.series.events.once('datavalidated',(ev: any, target: any) => {
-    //   this.xAxis.zoomToDates(from, new Date());
-    // });
     this.setScrollbar();
 
     this.series.data.setAll(this.data);
@@ -211,6 +204,7 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   private setScrollbar() {
     this.series.data.setAll(this.data);
+
     const startDate = new Date();
     if (this.period === 'ytd') {
       startDate.setMonth(0);

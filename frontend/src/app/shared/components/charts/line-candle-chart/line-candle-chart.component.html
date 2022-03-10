@@ -1,6 +1,9 @@
 <div class="relative">
   <div *ngIf="graphType === 'candle'">
-    <app-candle-chart [data]="getCandles()"></app-candle-chart>
+    <app-candle-chart
+      [data]="getCandles()"
+      [period]="period"
+    ></app-candle-chart>
   </div>
   <div *ngIf="graphType === 'line'">
     <app-line-chart [data]="getPoints()" [period]="period"></app-line-chart>
