@@ -7,7 +7,16 @@ import { Candles } from 'src/app/stocks/store';
 import { Am5Candle } from '../candle-chart/candle-chart.component';
 import { Am5Point } from '../line-chart/line-chart.component';
 
-type Period = '1w' | '1m' | '3m' | '6m' | '1y' | '3y' | '5y' | 'ytd' | 'all';
+export type Period =
+  | '1w'
+  | '1m'
+  | '3m'
+  | '6m'
+  | '1y'
+  | '3y'
+  | '5y'
+  | 'ytd'
+  | 'all';
 type GraphType = 'candle' | 'line';
 
 @Component({
@@ -34,7 +43,7 @@ export class LineCandleChartComponent {
   }
 
   getPoints(): Am5Point[] {
-    return <Am5Point[]>this.filterWIthPeriod(serializePoints(this.data));
+    return serializePoints(this.data);
   }
 
   filterWIthPeriod(data: Am5Candle[] | Am5Point[]): Am5Candle[] | Am5Point[] {
