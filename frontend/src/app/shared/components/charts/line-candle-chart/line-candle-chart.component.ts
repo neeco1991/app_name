@@ -6,17 +6,8 @@ import {
 import { Candles } from 'src/app/stocks/store';
 import { Am5Candle } from '../candle-chart/candle-chart.component';
 import { Am5Point } from '../line-chart/line-chart.component';
+import { Period } from '../period-selector/period-selector.component';
 
-export type Period =
-  | '1w'
-  | '1m'
-  | '3m'
-  | '6m'
-  | '1y'
-  | '3y'
-  | '5y'
-  | 'ytd'
-  | 'all';
 type GraphType = 'candle' | 'line';
 
 @Component({
@@ -30,7 +21,8 @@ export class LineCandleChartComponent {
   period: Period = '1y';
   graphType: GraphType = 'line';
 
-  setPeriod(period: Period) {
+  onSetPeriod(period: Period) {
+    console.log(period);
     this.period = period;
   }
 

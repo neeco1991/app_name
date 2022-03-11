@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  OnInit,
   Inject,
   Input,
   NgZone,
@@ -11,12 +10,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
-// amCharts imports
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-import { Period } from '../line-candle-chart/line-candle-chart.component';
+
+import { Period } from '../period-selector/period-selector.component';
 
 export interface Am5Point {
   date: number;

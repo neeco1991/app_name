@@ -8,62 +8,9 @@
   <div *ngIf="graphType === 'line'">
     <app-line-chart [data]="getPoints()" [period]="period"></app-line-chart>
   </div>
-  <div class="absolute mt-[490px] ml-[71px]">
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('1w')"
-    >
-      1w
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('1m')"
-    >
-      1m
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('3m')"
-    >
-      3m
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('6m')"
-    >
-      6m
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('ytd')"
-    >
-      ytd
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('1y')"
-    >
-      1y
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('3y')"
-    >
-      3y
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono mr-2"
-      (click)="setPeriod('5y')"
-    >
-      5y
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded font-mono"
-      (click)="setPeriod('all')"
-    >
-      all
-    </button>
-  </div>
+  <app-period-selector
+    (periodChange)="onSetPeriod($event)"
+  ></app-period-selector>
   <div class="absolute mt-[490px] ml-[1400px]">
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full mr-2"

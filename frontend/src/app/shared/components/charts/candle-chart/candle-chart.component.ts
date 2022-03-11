@@ -10,12 +10,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
-// amCharts imports
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-import { Period } from '../line-candle-chart/line-candle-chart.component';
+
+import { Period } from '../period-selector/period-selector.component';
 
 export interface Am5Candle {
   date: number;
@@ -163,30 +162,6 @@ export class CandleChartComponent
       })
     );
 
-    // andrebbero tornate così dal BE
-    // this.pushData();
-
-    const additionalData = this.data.map((candle, index) => {
-      if (index === 0) {
-        return { percentage: '---', color: 0x000000 };
-      }
-      const change = candle.close / this.data[index - 1].close - 1;
-      let color = this.downColor;
-      let addPlus = '';
-      if (change > 0) {
-        color = this.upColor;
-        addPlus = '+';
-      }
-      return { percentage: `${addPlus}${(change * 100).toFixed(2)}%`, color };
-    });
-
-    this.series.data.setAll(
-      this.data.map((day, index) => ({
-        ...day,
-        ...additionalData[index],
-      }))
-    );
-
     let scrollbar = am5xy.XYChartScrollbar.new(root, {
       orientation: 'horizontal',
       height: 50,
@@ -220,7 +195,6 @@ export class CandleChartComponent
 
     this.setScrollbar();
 
-    this.series.data.setAll(this.data);
     this.scrollbarSeries.data.setAll(this.data);
 
     // Add cursor
@@ -249,9 +223,30 @@ export class CandleChartComponent
     return root;
   }
 
-  private setScrollbar() {
-    this.series.data.setAll(this.data);
+  private pushData() {
+    const additionalData = this.data.map((candle, index) => {
+      if (index === 0) {
+        return { percentage: '---', color: 0x000000 };
+      }
+      const change = candle.close / this.data[index - 1].close - 1;
+      let color = this.downColor;
+      let addPlus = '';
+      if (change > 0) {
+        color = this.upColor;
+        addPlus = '+';
+      }
+      return { percentage: `${addPlus}${(change * 100).toFixed(2)}%`, color };
+    });
 
+    this.series.data.setAll(
+      this.data.map((day, index) => ({
+        ...day,
+        ...additionalData[index],
+      }))
+    );
+  }
+
+  private setScrollbar() {
     const startDate = new Date();
     if (this.period === 'ytd') {
       startDate.setMonth(0);
@@ -278,5 +273,7 @@ export class CandleChartComponent
     this.series.events.once('datavalidated', (ev: any, target: any) => {
       this.xAxis.zoomToDates(from, new Date());
     });
+
+    this.pushData();
   }
 }
