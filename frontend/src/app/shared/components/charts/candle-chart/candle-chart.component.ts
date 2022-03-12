@@ -39,6 +39,7 @@ export class CandleChartComponent
 
   @Input() data: Am5Candle[];
   @Input() period: Period;
+  @Input() size = [1500, 500];
 
   private root: am5.Root;
   private series: any;

@@ -1,17 +1,22 @@
-<div class="relative">
-  <div *ngIf="graphType === 'candle'">
-    <app-candle-chart
-      [data]="getCandles()"
-      [period]="period"
-    ></app-candle-chart>
-  </div>
-  <div *ngIf="graphType === 'line'">
-    <app-line-chart [data]="getPoints()" [period]="period"></app-line-chart>
-  </div>
+<div *ngIf="graphType === 'candle'" class="pt-12 pl-12 pr-12 pb-4">
+  <app-candle-chart
+    [data]="getCandles()"
+    [period]="period"
+    [size]="size"
+  ></app-candle-chart>
+</div>
+<div *ngIf="graphType === 'line'" class="pt-12 pl-12 pr-12 pb-4">
+  <app-line-chart
+    [data]="getPoints()"
+    [period]="period"
+    [size]="size"
+  ></app-line-chart>
+</div>
+<div class="flex justify-between w-full pb-4 pr-12 pl-12">
   <app-period-selector
     (periodChange)="onSetPeriod($event)"
   ></app-period-selector>
-  <div class="absolute mt-[490px] ml-[1400px]">
+  <div>
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full mr-2"
       [ngClass]="{ 'bg-blue-700': graphType === 'candle' }"

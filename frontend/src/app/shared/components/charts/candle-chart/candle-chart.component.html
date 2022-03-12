@@ -1,5 +1,4 @@
 <div
   id="candlechartdiv"
-  style="width: 1500px; height: 500px"
-  class="absolute"
+  [ngStyle]="{ 'height.px': size[1], 'width.px': size[0] }"
 ></div>

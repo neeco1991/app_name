@@ -17,12 +17,12 @@ type GraphType = 'candle' | 'line';
 })
 export class LineCandleChartComponent {
   @Input() data: Candles;
+  @Input() size = [1500, 500];
 
   period: Period = '1y';
   graphType: GraphType = 'line';
 
   onSetPeriod(period: Period) {
-    console.log(period);
     this.period = period;
   }
 
@@ -36,38 +36,5 @@ export class LineCandleChartComponent {
 
   getPoints(): Am5Point[] {
     return serializePoints(this.data);
-  }
-
-  filterWIthPeriod(data: Am5Candle[] | Am5Point[]): Am5Candle[] | Am5Point[] {
-    if (this.period === 'all') {
-      return data;
-    }
-    const startDate = new Date();
-    if (this.period === 'ytd') {
-      startDate.setMonth(0);
-      startDate.setDate(1);
-    } else if (this.period.endsWith('y')) {
-      const numberOfYears = +this.period[0];
-      startDate.setFullYear(startDate.getFullYear() - numberOfYears);
-    } else if (this.period.endsWith('m')) {
-      const numberOfMonths = +this.period[0];
-      const year =
-        startDate.getMonth() - numberOfMonths >= 0
-          ? startDate.getFullYear()
-          : startDate.getFullYear() - 1;
-      startDate.setMonth(startDate.getMonth() - numberOfMonths);
-      startDate.setFullYear(year);
-    } else if (this.period.endsWith('w')) {
-      startDate.setDate(startDate.getDate() - 7);
-    }
-
-    let lastValueIndex = data.length;
-    while (
-      data[lastValueIndex - 1].date > startDate.getTime() &&
-      lastValueIndex > 1
-    )
-      lastValueIndex--;
-
-    return data.slice(lastValueIndex);
   }
 }

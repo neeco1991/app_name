@@ -1,4 +1,4 @@
-<div class="relative flex flex-col justify-center items-center select-none">
+<div class="flex flex-col justify-center items-center select-none">
   <div *ngIf="tiker$ | async as tiker" class="mt-10">
     <app-stock-title [tiker]="tiker"></app-stock-title>
   </div>
@@ -14,7 +14,14 @@
   <div *ngIf="profile$ | async as profile">
     <p class="text-5xl text-gray-500">{{ profile.name }}</p>
   </div>
-  <div *ngIf="candles$ | async as candles" class="w-7/12">
-    <app-line-candle-chart [data]="candles"></app-line-candle-chart>
+  <div class="mt-4">
+    <app-card>
+      <div *ngIf="candles$ | async as candles">
+        <app-line-candle-chart
+          [data]="candles"
+          [size]="[1200, 400]"
+        ></app-line-candle-chart>
+      </div>
+    </app-card>
   </div>
 </ng-template>

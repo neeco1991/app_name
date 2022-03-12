@@ -8,6 +8,7 @@ import { LineCandleChartComponent } from './components/charts/line-candle-chart/
 import { CandleChartComponent } from './components/charts/candle-chart/candle-chart.component';
 import { LineChartComponent } from './components/charts/line-chart/line-chart.component';
 import { PeriodSelectorComponent } from './components/charts/period-selector/period-selector.component';
+import { CardComponent } from './components/card/card.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PeriodSelectorComponent } from './components/charts/period-selector/per
     CandleChartComponent,
     LineChartComponent,
     PeriodSelectorComponent,
+    CardComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -26,6 +28,7 @@ import { PeriodSelectorComponent } from './components/charts/period-selector/per
     LoadingComponent,
     PageOverlayComponent,
     LineCandleChartComponent,
+    CardComponent,
   ],
 })
 export class SharedModule {}

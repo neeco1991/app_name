@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+// import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
 
 import { Period } from '../period-selector/period-selector.component';
 
@@ -34,6 +35,7 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   @Input() data: Am5Point[];
   @Input() period: Period;
+  @Input() size = [1500, 500];
 
   private root: am5.Root;
   private series: any;
@@ -78,6 +80,7 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([am5themes_Animated.new(root)]);
+    // root.setThemes([am5themes_Responsive.new(root)]);
 
     // Create chart
     // https://www.amcharts.com/docs/v5/charts/xy-chart/
