@@ -1,12 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-// import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 import { SearchService } from 'src/app/shared/services/search.service';
 import { StockService } from 'src/app/shared/services/stocks.service';
-// import * as fromApp from '../../store/app.reducer';
 import { splitSymbol } from 'src/app/shared/utils/stocks';
 import * as StocksActions from './stocks.actions';
 
@@ -68,6 +66,72 @@ export class StocksEffect {
             )
           )
       )
+    )
+  );
+
+  fetchBalanceSheet$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(StocksActions.fetchBalanceSheet),
+      switchMap(({ symbol, limit }) => {
+        const query: any = {
+          symbol,
+        };
+        if (limit) {
+          query['limit'] = limit;
+        }
+        return this.stockSrv.balanceSheet(query).pipe(
+          map((data) => StocksActions.fetchBalanceSheetSuccess({ data })),
+          catchError((error: HttpErrorResponse) =>
+            of(StocksActions.fetchBalanceSheetError({ error: error.message }))
+          )
+        );
+      })
+    )
+  );
+
+  fetchIncomeStatement$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(StocksActions.fetchIncomeStatement),
+      switchMap(({ symbol, limit }) => {
+        const query: any = {
+          symbol,
+        };
+        if (limit) {
+          query['limit'] = limit;
+        }
+        return this.stockSrv.incomeStatement(query).pipe(
+          map((data) => StocksActions.fetchIncomeStatementSuccess({ data })),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              StocksActions.fetchIncomeStatementError({ error: error.message })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  fetchCashFlowStatement$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(StocksActions.fetchCashFlowStatement),
+      switchMap(({ symbol, limit }) => {
+        const query: any = {
+          symbol,
+        };
+        if (limit) {
+          query['limit'] = limit;
+        }
+        return this.stockSrv.cashFlowStatement(query).pipe(
+          map((data) => StocksActions.fetchCashFlowStatementSuccess({ data })),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              StocksActions.fetchCashFlowStatementError({
+                error: error.message,
+              })
+            )
+          )
+        );
+      })
     )
   );
 }

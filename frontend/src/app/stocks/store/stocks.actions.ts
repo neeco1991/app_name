@@ -1,4 +1,9 @@
 import { createAction, props } from '@ngrx/store';
+import {
+  BalanceSheetResponse,
+  CashFlowStatementResponse,
+  IncomeStatementResponse,
+} from 'src/app/shared/services/responses.type';
 
 export const FETCH_PROFILE = '[Stock] Fetch Profile';
 export const FETCH_PROFILE_SUCCESS = '[Stock] Fetch Profile Success';
@@ -59,5 +64,53 @@ export const fetchCandlesSuccess = createAction(
 );
 export const fetchCandlesError = createAction(
   FETCH_CANDLES_SUCCESS,
+  props<{ error: string }>()
+);
+
+export const fetchBalanceSheet = createAction(
+  FETCH_BALANCE_SHEET,
+  props<{
+    symbol: string;
+    limit: number | undefined;
+  }>()
+);
+export const fetchBalanceSheetSuccess = createAction(
+  FETCH_BALANCE_SHEET_SUCCESS,
+  props<{ data: BalanceSheetResponse }>()
+);
+export const fetchBalanceSheetError = createAction(
+  FETCH_BALANCE_SHEET_ERROR,
+  props<{ error: string }>()
+);
+
+export const fetchIncomeStatement = createAction(
+  FETCH_INCOME_STATEMENT,
+  props<{
+    symbol: string;
+    limit: number | undefined;
+  }>()
+);
+export const fetchIncomeStatementSuccess = createAction(
+  FETCH_INCOME_STATEMENT_SUCCESS,
+  props<{ data: IncomeStatementResponse }>()
+);
+export const fetchIncomeStatementError = createAction(
+  FETCH_INCOME_STATEMENT_ERROR,
+  props<{ error: string }>()
+);
+
+export const fetchCashFlowStatement = createAction(
+  FETCH_CASH_FLOW_STATEMENT,
+  props<{
+    symbol: string;
+    limit: number | undefined;
+  }>()
+);
+export const fetchCashFlowStatementSuccess = createAction(
+  FETCH_CASH_FLOW_STATEMENT_SUCCESS,
+  props<{ data: CashFlowStatementResponse }>()
+);
+export const fetchCashFlowStatementError = createAction(
+  FETCH_CASH_FLOW_STATEMENT_ERROR,
   props<{ error: string }>()
 );

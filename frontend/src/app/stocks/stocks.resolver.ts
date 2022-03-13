@@ -27,5 +27,14 @@ export class StocksResolver implements Resolve<void> {
         request_to: undefined,
       })
     );
+    this.store.dispatch(
+      StockActions.fetchBalanceSheet({ symbol, limit: undefined })
+    );
+    this.store.dispatch(
+      StockActions.fetchIncomeStatement({ symbol, limit: undefined })
+    );
+    this.store.dispatch(
+      StockActions.fetchCashFlowStatement({ symbol, limit: undefined })
+    );
   }
 }

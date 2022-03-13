@@ -27,9 +27,17 @@ export class SummaryComponent implements OnDestroy {
     })
   );
 
-  loading$ = this.store
-    .select('stock')
-    .pipe(takeUntil(this.destroyed$), pluck('loading'));
+  loading$ = this.store.select('stock').pipe(
+    takeUntil(this.destroyed$),
+    map(
+      (state) =>
+        state.candles.loading ||
+        state.profile.loading ||
+        state.financials.balanceSheet.loading ||
+        state.financials.cashFlowStatement.loading ||
+        state.financials.incomeStatement.loading
+    )
+  );
 
   profile$ = this.store
     .select('stock')

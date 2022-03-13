@@ -23,14 +23,24 @@ export interface Candles {
 }
 
 export interface Financials {
-  balanceSheet: BalanceSheetResponse;
-  incomeStatement: IncomeStatementResponse;
-  cashFlowStatement: CashFlowStatementResponse;
+  balanceSheet: {
+    loading: boolean;
+    error: string;
+    data: BalanceSheetResponse;
+  };
+  incomeStatement: {
+    loading: boolean;
+    error: string;
+    data: IncomeStatementResponse;
+  };
+  cashFlowStatement: {
+    loading: boolean;
+    error: string;
+    data: CashFlowStatementResponse;
+  };
 }
 
 export interface State {
-  loading: boolean;
-  errors: boolean;
   profile: Profile & {
     error: string;
     loading: boolean;
@@ -45,8 +55,6 @@ export interface State {
 }
 
 const initialState: State = {
-  loading: false,
-  errors: false,
   profile: {
     loading: false,
     error: '',
@@ -67,9 +75,21 @@ const initialState: State = {
     volume: [],
   },
   financials: {
-    balanceSheet: [],
-    incomeStatement: [],
-    cashFlowStatement: [],
+    balanceSheet: {
+      error: '',
+      loading: false,
+      data: [],
+    },
+    incomeStatement: {
+      error: '',
+      loading: false,
+      data: [],
+    },
+    cashFlowStatement: {
+      error: '',
+      loading: false,
+      data: [],
+    },
   },
 };
 
@@ -85,8 +105,6 @@ const _stockReducer = createReducer(
   })),
   on(StockActions.fetchProfileSuccess, (state, { ticker, name, exchange }) => ({
     ...state,
-    loading: state.candles.loading,
-    errors: !!state.candles.error,
     profile: {
       ...state.profile,
       loading: false,
@@ -98,8 +116,6 @@ const _stockReducer = createReducer(
   })),
   on(StockActions.fetchProfileError, (state, { error }) => ({
     ...state,
-    loading: state.candles.loading,
-    errors: true,
     profile: {
       ...state.profile,
       loading: false,
@@ -120,8 +136,6 @@ const _stockReducer = createReducer(
     StockActions.fetchCandlesSuccess,
     (state, { open, close, high, low, volume, time }) => ({
       ...state,
-      loading: state.profile.loading,
-      errors: !!state.profile.error,
       candles: {
         ...state.candles,
         loading: false,
@@ -137,12 +151,109 @@ const _stockReducer = createReducer(
   ),
   on(StockActions.fetchCandlesError, (state, { error }) => ({
     ...state,
-    loading: state.profile.loading,
-    errors: true,
     candles: {
       ...state.candles,
       loading: false,
       error,
+    },
+  })),
+  on(StockActions.fetchBalanceSheet, (state) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      balanceSheet: {
+        ...state.financials.balanceSheet,
+        loading: true,
+      },
+    },
+  })),
+  on(StockActions.fetchBalanceSheetSuccess, (state, { data }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      balanceSheet: {
+        ...state.financials.balanceSheet,
+        loading: false,
+        error: '',
+        data,
+      },
+    },
+  })),
+  on(StockActions.fetchBalanceSheetError, (state, { error }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      balanceSheet: {
+        ...state.financials.balanceSheet,
+        loading: false,
+        error,
+      },
+    },
+  })),
+  on(StockActions.fetchIncomeStatement, (state) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      incomeStatement: {
+        ...state.financials.incomeStatement,
+        loading: true,
+      },
+    },
+  })),
+  on(StockActions.fetchIncomeStatementSuccess, (state, { data }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      incomeStatement: {
+        ...state.financials.incomeStatement,
+        loading: false,
+        error: '',
+        data,
+      },
+    },
+  })),
+  on(StockActions.fetchIncomeStatementError, (state, { error }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      incomeStatement: {
+        ...state.financials.incomeStatement,
+        loading: false,
+        error,
+      },
+    },
+  })),
+  on(StockActions.fetchCashFlowStatement, (state) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      cashFlowStatement: {
+        ...state.financials.cashFlowStatement,
+        loading: true,
+      },
+    },
+  })),
+  on(StockActions.fetchCashFlowStatementSuccess, (state, { data }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      cashFlowStatement: {
+        ...state.financials.cashFlowStatement,
+        loading: false,
+        error: '',
+        data,
+      },
+    },
+  })),
+  on(StockActions.fetchCashFlowStatementError, (state, { error }) => ({
+    ...state,
+    financials: {
+      ...state.financials,
+      cashFlowStatement: {
+        ...state.financials.cashFlowStatement,
+        loading: false,
+        error,
+      },
     },
   }))
 );

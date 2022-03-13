@@ -15,6 +15,7 @@ interface Query {
   symbol: string;
   start?: Date | undefined;
   end?: Date | undefined;
+  limit?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -41,9 +42,12 @@ export class StockService {
   }
 
   balanceSheet(query: Query): Observable<BalanceSheetResponse> {
-    const params = {
+    const params: any = {
       apikey: environment.fmg.apiKey,
     };
+    if (query.limit) {
+      params['limit'] = query.limit;
+    }
 
     return this.http.get<BalanceSheetResponse>(
       `${environment.fmg.url}/balance-sheet-statement/${query.symbol}`,
@@ -52,9 +56,12 @@ export class StockService {
   }
 
   incomeStatement(query: Query): Observable<IncomeStatementResponse> {
-    const params = {
+    const params: any = {
       apikey: environment.fmg.apiKey,
     };
+    if (query.limit) {
+      params['limit'] = query.limit;
+    }
 
     return this.http.get<IncomeStatementResponse>(
       `${environment.fmg.url}/income-statement/${query.symbol}`,
@@ -63,9 +70,12 @@ export class StockService {
   }
 
   cashFlowStatement(query: Query): Observable<CashFlowStatementResponse> {
-    const params = {
+    const params: any = {
       apikey: environment.fmg.apiKey,
     };
+    if (query.limit) {
+      params['limit'] = query.limit;
+    }
 
     return this.http.get<CashFlowStatementResponse>(
       `${environment.fmg.url}/cash-flow-statement/${query.symbol}`,
