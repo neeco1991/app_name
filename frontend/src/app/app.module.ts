@@ -5,6 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { AppRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
@@ -29,6 +32,9 @@ import { StocksEffect } from './stocks/store/stocks.effect';
     SearchBarComponent,
   ],
   imports: [
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,

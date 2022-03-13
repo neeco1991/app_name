@@ -1,44 +1,25 @@
-<div class="stock-search">
-  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search">
+<form [formGroup]="searchForm" class="example-form" (ngSubmit)="onSubmit()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <!-- <mat-label>Number</mat-label> -->
     <input
-      #searchInput
-      formControlName="stock"
       type="text"
-      class="search__input"
-      placeholder="Search stocks"
-      (focus)="onInputFocus(true)"
-      (blur)="onInputFocus(false)"
-      [@expand]="isSearchBarFocused$ | async"
+      placeholder="Search Stocks"
+      aria-label="stock"
+      matInput
+      formControlName="stock"
+      [matAutocomplete]="auto"
     />
-
-    <div *ngIf="queryResults$ | async as results" style="width: 100%">
-      <select
-        formControlName="result"
-        *ngIf="isSearchBarFocused$ | async"
-        class="results results__scrollbar-fix"
-        size="5"
-        id="query_results"
-        (keydown.enter)="onSubmit()"
-        (focus)="onSelectFocus(true)"
-        (blur)="onSelectFocus(false)"
-        [@inOutAnimation]
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option
+        *ngFor="let option of queryResults$ | async"
+        [value]="option.symbol"
       >
-        <option
-          *ngFor="let result of results; let i = index"
-          [ngValue]="result.symbol"
-          class="results__item"
-          (click)="onSubmit()"
-          [id]="'query_results_' + i"
-        >
-          <b> {{ result.symbol }} </b>
-          <div style="margin-left: 1rem">
-            {{ result.description | capitalize: "all" }}
-          </div>
-          <div style="margin-left: 1rem; font-size: 2rem">
-            {{ result.type }}
-          </div>
-        </option>
-      </select>
-    </div>
-  </form>
-</div>
+        <p style="margin-left: 1rem">
+          <b> {{ option.symbol }} </b>
+          {{ option.description | capitalize: "all" }}
+          {{ option.type }}
+        </p>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
