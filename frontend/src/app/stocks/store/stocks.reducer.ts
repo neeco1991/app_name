@@ -186,6 +186,7 @@ const _stockReducer = createReducer(
       balanceSheet: {
         ...state.financials.balanceSheet,
         loading: false,
+        data: [],
         error,
       },
     },
@@ -219,6 +220,7 @@ const _stockReducer = createReducer(
       incomeStatement: {
         ...state.financials.incomeStatement,
         loading: false,
+        data: [],
         error,
       },
     },
@@ -252,6 +254,7 @@ const _stockReducer = createReducer(
       cashFlowStatement: {
         ...state.financials.cashFlowStatement,
         loading: false,
+        data: [],
         error,
       },
     },
