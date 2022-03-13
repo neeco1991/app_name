@@ -7,6 +7,10 @@ export const environment = {
   backend: {
     url: 'http://localhost:7949',
   },
+  fmg: {
+    url: 'https://financialmodelingprep.com/api/v3',
+    apiKey: 'b7ba54ac9d4953dc671e3e50665870c6',
+  },
 };
 
 /*

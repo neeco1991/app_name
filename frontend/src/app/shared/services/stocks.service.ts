@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+
+import { environment } from '../../../environments/environment';
 import { getUNIXTimestamp } from '../utils/dates';
+import {
+  BalanceSheetResponse,
+  CashFlowStatementResponse,
+  IncomeStatementResponse,
+  StockCandlesResponse,
+} from './responses.type';
 
-interface StockCandlesResponse {
-  c: number[];
-  o: number[];
-  l: number[];
-  h: number[];
-  t: number[];
-  v: number[];
-  s: string;
-}
-
-interface CandlesQuery {
+interface Query {
   symbol: string;
   start?: Date | undefined;
   end?: Date | undefined;
@@ -25,7 +22,7 @@ export class StockService {
   private baseUrl = `${environment.backend.url}/stock`;
   constructor(private http: HttpClient) {}
 
-  candles(query: CandlesQuery): Observable<StockCandlesResponse> {
+  candles(query: Query): Observable<StockCandlesResponse> {
     const oneHundredYearsAgo = new Date();
     oneHundredYearsAgo.setFullYear(oneHundredYearsAgo.getFullYear() - 100);
     const params = {
@@ -41,5 +38,38 @@ export class StockService {
     return this.http.get<StockCandlesResponse>(`${this.baseUrl}/candles`, {
       params,
     });
+  }
+
+  balanceSheet(query: Query): Observable<BalanceSheetResponse> {
+    const params = {
+      apikey: environment.fmg.apiKey,
+    };
+
+    return this.http.get<BalanceSheetResponse>(
+      `${environment.fmg.url}/balance-sheet-statement/${query.symbol}`,
+      { params }
+    );
+  }
+
+  incomeStatement(query: Query): Observable<IncomeStatementResponse> {
+    const params = {
+      apikey: environment.fmg.apiKey,
+    };
+
+    return this.http.get<IncomeStatementResponse>(
+      `${environment.fmg.url}/income-statement/${query.symbol}`,
+      { params }
+    );
+  }
+
+  cashFlowStatement(query: Query): Observable<CashFlowStatementResponse> {
+    const params = {
+      apikey: environment.fmg.apiKey,
+    };
+
+    return this.http.get<CashFlowStatementResponse>(
+      `${environment.fmg.url}/cash-flow-statement/${query.symbol}`,
+      { params }
+    );
   }
 }

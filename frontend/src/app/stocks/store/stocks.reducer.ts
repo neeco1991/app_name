@@ -1,4 +1,9 @@
 import { Action, createReducer, on } from '@ngrx/store';
+import {
+  BalanceSheetResponse,
+  CashFlowStatementResponse,
+  IncomeStatementResponse,
+} from 'src/app/shared/services/responses.type';
 
 import * as StockActions from './stocks.actions';
 
@@ -17,6 +22,12 @@ export interface Candles {
   volume: number[];
 }
 
+export interface Financials {
+  balanceSheet: BalanceSheetResponse;
+  incomeStatement: IncomeStatementResponse;
+  cashFlowStatement: CashFlowStatementResponse;
+}
+
 export interface State {
   loading: boolean;
   errors: boolean;
@@ -30,6 +41,7 @@ export interface State {
     timestamp_from: Date | null;
     timestamp_to: Date | null;
   };
+  financials: Financials;
 }
 
 const initialState: State = {
@@ -53,6 +65,11 @@ const initialState: State = {
     open: [],
     time: [],
     volume: [],
+  },
+  financials: {
+    balanceSheet: [],
+    incomeStatement: [],
+    cashFlowStatement: [],
   },
 };
 
