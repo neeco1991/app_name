@@ -1,6 +1,9 @@
-<form [formGroup]="searchForm" class="example-form" (ngSubmit)="onSubmit()">
+<form
+  [formGroup]="searchForm"
+  class="example-form bg-white"
+  (ngSubmit)="onSubmit()"
+>
   <mat-form-field class="example-full-width" appearance="fill">
-    <!-- <mat-label>Number</mat-label> -->
     <input
       type="text"
       placeholder="Search Stocks"
@@ -9,12 +12,12 @@
       formControlName="stock"
       [matAutocomplete]="auto"
     />
-    <mat-autocomplete #auto="matAutocomplete">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSubmit()">
       <mat-option
         *ngFor="let option of queryResults$ | async"
         [value]="option.symbol"
       >
-        <p style="margin-left: 1rem">
+        <p>
           <b> {{ option.symbol }} </b>
           {{ option.description | capitalize: "all" }}
           {{ option.type }}

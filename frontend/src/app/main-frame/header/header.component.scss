@@ -7,32 +7,7 @@
   background-color: var(--color-primary);
   box-shadow: var(--shadow-light);
 
-  &__hamburger {
-    margin-left: 1rem;
-    cursor: pointer;
-  }
-
-  &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-right: 1px solid var(--color-grey-4);
-    height: 100%;
-  }
-
   &__user {
     margin-left: auto;
   }
-}
-
-.app-name {
-  font-family: "Qbicle";
-  font-size: 3rem;
-  // color: white;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-  cursor: pointer;
 }
