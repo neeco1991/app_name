@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   serializeCandles,
   serializePoints,
@@ -15,12 +15,17 @@ type GraphType = 'candle' | 'line';
   templateUrl: './line-candle-chart.component.html',
   styleUrls: ['./line-candle-chart.component.scss'],
 })
-export class LineCandleChartComponent {
+export class LineCandleChartComponent implements OnInit {
   @Input() data: Candles;
   @Input() size = [1500, 500];
 
   period: Period = '1y';
   graphType: GraphType = 'line';
+  lastValue: number;
+
+  ngOnInit(): void {
+    this.lastValue = this.data.close[this.data.close.length - 1];
+  }
 
   onSetPeriod(period: Period) {
     this.period = period;

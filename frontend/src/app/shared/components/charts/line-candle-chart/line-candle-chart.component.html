@@ -1,18 +1,19 @@
-<div *ngIf="graphType === 'candle'" class="pt-12 pl-12 pr-12 pb-4">
+<app-chart-title title="price" [value]="lastValue"> </app-chart-title>
+<div *ngIf="graphType === 'candle'" class="pl-8 pr-8 pb-4 border-b-2">
   <app-candle-chart
     [data]="getCandles()"
     [period]="period"
     [size]="size"
   ></app-candle-chart>
 </div>
-<div *ngIf="graphType === 'line'" class="pt-12 pl-12 pr-12 pb-4">
+<div *ngIf="graphType === 'line'" class="pl-8 pr-8 pb-4 border-b-2">
   <app-line-chart
     [data]="getPoints()"
     [period]="period"
     [size]="size"
   ></app-line-chart>
 </div>
-<div class="flex justify-between w-full pb-4 pr-12 pl-12">
+<div class="flex justify-between w-full pb-4 pr-8 pl-8 pt-4">
   <app-period-selector
     (periodChange)="onSetPeriod($event)"
   ></app-period-selector>
