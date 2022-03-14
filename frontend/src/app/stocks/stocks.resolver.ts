@@ -27,14 +27,21 @@ export class StocksResolver implements Resolve<void> {
         request_to: undefined,
       })
     );
-    this.store.dispatch(
-      StockActions.fetchBalanceSheet({ symbol, limit: undefined })
-    );
-    this.store.dispatch(
-      StockActions.fetchIncomeStatement({ symbol, limit: undefined })
-    );
-    this.store.dispatch(
-      StockActions.fetchCashFlowStatement({ symbol, limit: undefined })
-    );
+
+    setTimeout(() => {
+      this.store.dispatch(
+        StockActions.fetchBalanceSheet({ symbol, limit: undefined })
+      );
+    }, 0);
+    setTimeout(() => {
+      this.store.dispatch(
+        StockActions.fetchIncomeStatement({ symbol, limit: undefined })
+      );
+    }, 2000);
+    setTimeout(() => {
+      this.store.dispatch(
+        StockActions.fetchCashFlowStatement({ symbol, limit: undefined })
+      );
+    }, 4000);
   }
 }
