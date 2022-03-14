@@ -76,7 +76,7 @@ export const fetchBalanceSheet = createAction(
 );
 export const fetchBalanceSheetSuccess = createAction(
   FETCH_BALANCE_SHEET_SUCCESS,
-  props<{ data: BalanceSheetResponse }>()
+  props<{ fy: BalanceSheetResponse }>()
 );
 export const fetchBalanceSheetError = createAction(
   FETCH_BALANCE_SHEET_ERROR,
@@ -92,7 +92,7 @@ export const fetchIncomeStatement = createAction(
 );
 export const fetchIncomeStatementSuccess = createAction(
   FETCH_INCOME_STATEMENT_SUCCESS,
-  props<{ data: IncomeStatementResponse }>()
+  props<{ fy: IncomeStatementResponse }>()
 );
 export const fetchIncomeStatementError = createAction(
   FETCH_INCOME_STATEMENT_ERROR,
@@ -108,7 +108,7 @@ export const fetchCashFlowStatement = createAction(
 );
 export const fetchCashFlowStatementSuccess = createAction(
   FETCH_CASH_FLOW_STATEMENT_SUCCESS,
-  props<{ data: CashFlowStatementResponse }>()
+  props<{ fy: CashFlowStatementResponse }>()
 );
 export const fetchCashFlowStatementError = createAction(
   FETCH_CASH_FLOW_STATEMENT_ERROR,

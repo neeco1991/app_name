@@ -50,7 +50,9 @@ export class StockService {
     }
 
     return this.http.get<BalanceSheetResponse>(
-      `${environment.fmg.url}/balance-sheet-statement/${query.symbol}`,
+      `${
+        environment.fmg.url
+      }/balance-sheet-statement/${query.symbol.toUpperCase()}`,
       { params }
     );
   }
@@ -64,7 +66,7 @@ export class StockService {
     }
 
     return this.http.get<IncomeStatementResponse>(
-      `${environment.fmg.url}/income-statement/${query.symbol}`,
+      `${environment.fmg.url}/income-statement/${query.symbol.toUpperCase()}`,
       { params }
     );
   }
@@ -78,7 +80,9 @@ export class StockService {
     }
 
     return this.http.get<CashFlowStatementResponse>(
-      `${environment.fmg.url}/cash-flow-statement/${query.symbol}`,
+      `${
+        environment.fmg.url
+      }/cash-flow-statement/${query.symbol.toUpperCase()}`,
       { params }
     );
   }

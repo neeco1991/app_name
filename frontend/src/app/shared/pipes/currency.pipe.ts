@@ -1,28 +1,151 @@
 import { Pipe, PipeTransform } from '@angular/core';
+const CURRENCIES: { [key: string]: string | undefined } = {
+  ADP: undefined,
+  AFN: '؋',
+  ALL: undefined,
+  AMD: '֏',
+  AOA: 'Kz',
+  ARS: '$',
+  AUD: 'A$',
+  AZN: '₼',
+  BAM: 'KM',
+  BBD: '$',
+  BDT: '৳',
+  BHD: undefined,
+  BIF: undefined,
+  BMD: '$',
+  BND: '$',
+  BOB: 'Bs',
+  BRL: 'R$',
+  BSD: '$',
+  BWP: 'P',
+  BYN: 'р.',
+  BYR: undefined,
+  BZD: '$',
+  CAD: 'CA$',
+  CHF: undefined,
+  CLF: undefined,
+  CLP: '$',
+  CNY: 'CN¥',
+  COP: '$',
+  CRC: '₡',
+  CUC: '$',
+  CUP: '$',
+  CZK: 'Kč',
+  DJF: undefined,
+  DKK: 'kr',
+  DOP: '$',
+  EGP: 'E£',
+  ESP: '₧',
+  EUR: '€',
+  FJD: '$',
+  FKP: '£',
+  GBP: '£',
+  GEL: '₾',
+  GHS: 'GH₵',
+  GIP: '£',
+  GNF: 'FG',
+  GTQ: 'Q',
+  GYD: '$',
+  HKD: 'HK$',
+  HNL: 'L',
+  HRK: 'kn',
+  HUF: 'Ft',
+  IDR: 'Rp',
+  ILS: '₪',
+  INR: '₹',
+  IQD: undefined,
+  IRR: undefined,
+  ISK: 'kr',
+  ITL: undefined,
+  JMD: '$',
+  JOD: undefined,
+  JPY: '¥',
+  KHR: '៛',
+  KMF: 'CF',
+  KPW: '₩',
+  KRW: '₩',
+  KWD: undefined,
+  KYD: '$',
+  KZT: '₸',
+  LAK: '₭',
+  LBP: 'L£',
+  LKR: 'Rs',
+  LRD: '$',
+  LTL: 'Lt',
+  LUF: undefined,
+  LVL: 'Ls',
+  LYD: undefined,
+  MGA: 'Ar',
+  MGF: undefined,
+  MMK: 'K',
+  MNT: '₮',
+  MRO: undefined,
+  MUR: 'Rs',
+  MXN: 'MX$',
+  MYR: 'RM',
+  NAD: '$',
+  NGN: '₦',
+  NIO: 'C$',
+  NOK: 'kr',
+  NPR: 'Rs',
+  NZD: 'NZ$',
+  OMR: undefined,
+  PHP: '₱',
+  PKR: 'Rs',
+  PLN: 'zł',
+  PYG: '₲',
+  RON: 'lei',
+  RSD: undefined,
+  RUB: '₽',
+  RUR: 'р.',
+  RWF: 'RF',
+  SBD: '$',
+  SEK: 'kr',
+  SGD: '$',
+  SHP: '£',
+  SLL: undefined,
+  SOS: undefined,
+  SRD: '$',
+  SSP: '£',
+  STD: undefined,
+  STN: 'Db',
+  SYP: '£',
+  THB: '฿',
+  TMM: undefined,
+  TND: undefined,
+  TOP: 'T$',
+  TRL: undefined,
+  TRY: '₺',
+  TTD: '$',
+  TWD: 'NT$',
+  TZS: undefined,
+  UAH: '₴',
+  UGX: undefined,
+  USD: '$',
+  UYI: undefined,
+  UYU: '$',
+  UYW: undefined,
+  UZS: undefined,
+  VEF: 'Bs',
+  VND: '₫',
+  VUV: undefined,
+  XAF: 'FCFA',
+  XCD: 'EC$',
+  XOF: 'F CFA',
+  XPF: 'CFPF',
+  XXX: '¤',
+  YER: undefined,
+  ZAR: 'R',
+  ZMK: undefined,
+  ZMW: 'ZK',
+  ZWD: undefined,
+};
 
-@Pipe({ name: 'symbol' })
-export class SymbolPipe implements PipeTransform {
-  CURRENCY_SYMBOLS: { [key: string]: string } = {
-    USD: '$', // US Dollar
-    EUR: '€', // Euro
-    CRC: '₡', // Costa Rican Colón
-    GBP: '£', // British Pound Sterling
-    ILS: '₪', // Israeli New Sheqel
-    INR: '₹', // Indian Rupee
-    JPY: '¥', // Japanese Yen
-    KRW: '₩', // South Korean Won
-    NGN: '₦', // Nigerian Naira
-    PHP: '₱', // Philippine Peso
-    PLN: 'zł', // Polish Zloty
-    PYG: '₲', // Paraguayan Guarani
-    THB: '฿', // Thai Baht
-    UAH: '₴', // Ukrainian Hryvnia
-    VND: '₫', // Vietnamese Dong
-    RUB: '₽', // Russian Ruble
-  };
-
+@Pipe({ name: 'currency' })
+export class CurrencyPipe implements PipeTransform {
   transform(currency: string, ...args: any[]): string {
-    const symbol = this.CURRENCY_SYMBOLS[currency];
+    const symbol = CURRENCIES[currency];
     return symbol || '';
   }
 }

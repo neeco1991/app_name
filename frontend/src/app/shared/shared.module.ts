@@ -10,10 +10,14 @@ import { LineChartComponent } from './components/charts/line-chart/line-chart.co
 import { PeriodSelectorComponent } from './components/charts/period-selector/period-selector.component';
 import { CardComponent } from './components/card/card.component';
 import { ChartTitleComponent } from './components/charts/chart-title/chart-title.component';
+import { BigNumberPipe } from './pipes/big-number.pipe';
+import { CurrencyPipe } from './pipes/currency.pipe';
 
 @NgModule({
   declarations: [
     CapitalizePipe,
+    CurrencyPipe,
+    BigNumberPipe,
     LoadingComponent,
     PageOverlayComponent,
     LineCandleChartComponent,
@@ -27,6 +31,8 @@ import { ChartTitleComponent } from './components/charts/chart-title/chart-title
   exports: [
     CommonModule,
     CapitalizePipe,
+    CurrencyPipe,
+    BigNumberPipe,
     LoadingComponent,
     PageOverlayComponent,
     LineCandleChartComponent,

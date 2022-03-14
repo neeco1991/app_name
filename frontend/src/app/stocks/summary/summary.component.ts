@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, pluck, Subject, takeUntil, tap } from 'rxjs';
+import { map, pluck, Subject, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 import * as fromApp from '../../store';
 
@@ -46,6 +46,25 @@ export class SummaryComponent implements OnDestroy {
   candles$ = this.store
     .select('stock')
     .pipe(takeUntil(this.destroyed$), pluck('candles'));
+
+  currency$ = this.store.select('stock').pipe(
+    takeUntil(this.destroyed$),
+    pluck('financials'),
+    pluck('incomeStatement'),
+    map(({ fy }) => fy[0].reportedCurrency)
+  );
+
+  WNShares$ = this.store.select('stock').pipe(
+    takeUntil(this.destroyed$),
+    pluck('financials'),
+    pluck('incomeStatement'),
+    map(({ fy }) => fy[0].weightedAverageShsOut)
+  );
+
+  marketCap$ = this.candles$.pipe(
+    withLatestFrom(this.WNShares$),
+    map(([{ close }, shares]) => close[close.length - 1] * shares)
+  );
 
   ngOnDestroy(): void {
     this.destroyed$.next();

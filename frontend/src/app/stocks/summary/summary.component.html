@@ -13,6 +13,7 @@
 <ng-template #stockPage>
   <div *ngIf="profile$ | async as profile">
     <p class="text-5xl text-gray-500">{{ profile.name }}</p>
+    <!-- {{ marketCap$ | async }} -->
   </div>
   <div class="mt-4">
     <app-card>

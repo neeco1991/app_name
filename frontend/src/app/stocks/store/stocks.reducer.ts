@@ -26,17 +26,17 @@ export interface Financials {
   balanceSheet: {
     loading: boolean;
     error: string;
-    data: BalanceSheetResponse;
+    fy: BalanceSheetResponse;
   };
   incomeStatement: {
     loading: boolean;
     error: string;
-    data: IncomeStatementResponse;
+    fy: IncomeStatementResponse;
   };
   cashFlowStatement: {
     loading: boolean;
     error: string;
-    data: CashFlowStatementResponse;
+    fy: CashFlowStatementResponse;
   };
 }
 
@@ -78,17 +78,17 @@ const initialState: State = {
     balanceSheet: {
       error: '',
       loading: false,
-      data: [],
+      fy: [],
     },
     incomeStatement: {
       error: '',
       loading: false,
-      data: [],
+      fy: [],
     },
     cashFlowStatement: {
       error: '',
       loading: false,
-      data: [],
+      fy: [],
     },
   },
 };
@@ -167,7 +167,7 @@ const _stockReducer = createReducer(
       },
     },
   })),
-  on(StockActions.fetchBalanceSheetSuccess, (state, { data }) => ({
+  on(StockActions.fetchBalanceSheetSuccess, (state, { fy }) => ({
     ...state,
     financials: {
       ...state.financials,
@@ -175,7 +175,7 @@ const _stockReducer = createReducer(
         ...state.financials.balanceSheet,
         loading: false,
         error: '',
-        data,
+        fy,
       },
     },
   })),
@@ -186,7 +186,7 @@ const _stockReducer = createReducer(
       balanceSheet: {
         ...state.financials.balanceSheet,
         loading: false,
-        data: [],
+        fy: [],
         error,
       },
     },
@@ -201,7 +201,7 @@ const _stockReducer = createReducer(
       },
     },
   })),
-  on(StockActions.fetchIncomeStatementSuccess, (state, { data }) => ({
+  on(StockActions.fetchIncomeStatementSuccess, (state, { fy }) => ({
     ...state,
     financials: {
       ...state.financials,
@@ -209,7 +209,7 @@ const _stockReducer = createReducer(
         ...state.financials.incomeStatement,
         loading: false,
         error: '',
-        data,
+        fy,
       },
     },
   })),
@@ -220,7 +220,7 @@ const _stockReducer = createReducer(
       incomeStatement: {
         ...state.financials.incomeStatement,
         loading: false,
-        data: [],
+        fy: [],
         error,
       },
     },
@@ -235,7 +235,7 @@ const _stockReducer = createReducer(
       },
     },
   })),
-  on(StockActions.fetchCashFlowStatementSuccess, (state, { data }) => ({
+  on(StockActions.fetchCashFlowStatementSuccess, (state, { fy }) => ({
     ...state,
     financials: {
       ...state.financials,
@@ -243,7 +243,7 @@ const _stockReducer = createReducer(
         ...state.financials.cashFlowStatement,
         loading: false,
         error: '',
-        data,
+        fy,
       },
     },
   })),
@@ -254,7 +254,7 @@ const _stockReducer = createReducer(
       cashFlowStatement: {
         ...state.financials.cashFlowStatement,
         loading: false,
-        data: [],
+        fy: [],
         error,
       },
     },

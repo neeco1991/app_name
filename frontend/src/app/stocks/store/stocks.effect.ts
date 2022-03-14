@@ -80,7 +80,7 @@ export class StocksEffect {
           query['limit'] = limit;
         }
         return this.stockSrv.balanceSheet(query).pipe(
-          map((data) => StocksActions.fetchBalanceSheetSuccess({ data })),
+          map((fy) => StocksActions.fetchBalanceSheetSuccess({ fy })),
           catchError((error: HttpErrorResponse) =>
             of(StocksActions.fetchBalanceSheetError({ error: error.message }))
           )
@@ -100,7 +100,7 @@ export class StocksEffect {
           query['limit'] = limit;
         }
         return this.stockSrv.incomeStatement(query).pipe(
-          map((data) => StocksActions.fetchIncomeStatementSuccess({ data })),
+          map((fy) => StocksActions.fetchIncomeStatementSuccess({ fy })),
           catchError((error: HttpErrorResponse) =>
             of(
               StocksActions.fetchIncomeStatementError({ error: error.message })
@@ -122,7 +122,7 @@ export class StocksEffect {
           query['limit'] = limit;
         }
         return this.stockSrv.cashFlowStatement(query).pipe(
-          map((data) => StocksActions.fetchCashFlowStatementSuccess({ data })),
+          map((fy) => StocksActions.fetchCashFlowStatementSuccess({ fy })),
           catchError((error: HttpErrorResponse) =>
             of(
               StocksActions.fetchCashFlowStatementError({
