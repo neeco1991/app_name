@@ -1,9 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, pluck, Subject, takeUntil, tap, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  pluck,
+  Subject,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
 import * as fromApp from '../../store';
+import { Stats } from '../stats/stats.component';
 
 @Component({
   selector: 'app-summary',
@@ -27,15 +36,17 @@ export class SummaryComponent implements OnDestroy {
     })
   );
 
-  loading$ = this.store.select('stock').pipe(
+  notLoading$ = this.store.select('stock').pipe(
     takeUntil(this.destroyed$),
     map(
       (state) =>
-        state.candles.loading ||
-        state.profile.loading ||
-        state.financials.balanceSheet.loading ||
-        state.financials.cashFlowStatement.loading ||
-        state.financials.incomeStatement.loading
+        !(
+          state.candles.loading ||
+          state.profile.loading ||
+          state.financials.balanceSheet.loading ||
+          state.financials.cashFlowStatement.loading ||
+          state.financials.incomeStatement.loading
+        )
     )
   );
 
@@ -62,8 +73,21 @@ export class SummaryComponent implements OnDestroy {
   );
 
   marketCap$ = this.candles$.pipe(
+    takeUntil(this.destroyed$),
     withLatestFrom(this.WNShares$),
     map(([{ close }, shares]) => close[close.length - 1] * shares)
+  );
+
+  stats$ = combineLatest([this.candles$, this.marketCap$]).pipe(
+    takeUntil(this.destroyed$),
+    map(
+      ([{ close }, marketCap]): Stats => ({
+        price: {
+          price: close[close.length - 1],
+          marketCap,
+        },
+      })
+    )
   );
 
   ngOnDestroy(): void {

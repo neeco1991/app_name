@@ -3,26 +3,31 @@
     <app-stock-title [tiker]="tiker"></app-stock-title>
   </div>
 
-  <div *ngIf="loading$ | async; else stockPage">
-    <app-page-overlay>
-      <app-loading></app-loading>
-    </app-page-overlay>
+  <div
+    *ngIf="notLoading$ | async; else loading"
+    class="flex flex-col justify-center items-center select-none"
+  >
+    <div *ngIf="profile$ | async as profile">
+      <p class="text-5xl text-gray-500">{{ profile.name }}</p>
+    </div>
+    <div *ngIf="stats$ | async as stats" class="mt-4">
+      <app-stats [stats]="stats"></app-stats>
+    </div>
+    <div class="mt-4">
+      <app-card>
+        <div *ngIf="candles$ | async as candles">
+          <app-line-candle-chart
+            [data]="candles"
+            [size]="[1200, 400]"
+          ></app-line-candle-chart>
+        </div>
+      </app-card>
+    </div>
   </div>
 </div>
 
-<ng-template #stockPage>
-  <div *ngIf="profile$ | async as profile">
-    <p class="text-5xl text-gray-500">{{ profile.name }}</p>
-    <!-- {{ marketCap$ | async }} -->
-  </div>
-  <div class="mt-4">
-    <app-card>
-      <div *ngIf="candles$ | async as candles">
-        <app-line-candle-chart
-          [data]="candles"
-          [size]="[1200, 400]"
-        ></app-line-candle-chart>
-      </div>
-    </app-card>
-  </div>
+<ng-template #loading>
+  <app-page-overlay>
+    <app-loading></app-loading>
+  </app-page-overlay>
 </ng-template>

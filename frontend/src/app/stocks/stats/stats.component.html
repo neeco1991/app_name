@@ -1,0 +1,21 @@
+<div class="flex flex-col rounded-lg border-2 border-black">
+  <h3
+    class="font-semibold uppercase border-b-2 border-black flex justify-center text-4xl"
+  >
+    price
+  </h3>
+  <div class="px-1">
+    <div class="flex justify-between">
+      <p class="font-semibold uppercase">price</p>
+      <p class="font-medium uppercase ml-4">
+        {{ stats.price.price | big_number }}{{ currency | currency }}
+      </p>
+    </div>
+    <div class="flex justify-between">
+      <p class="font-semibold uppercase">market cap</p>
+      <p class="font-medium uppercase ml-4">
+        {{ stats.price.marketCap | big_number }}{{ currency | currency }}
+      </p>
+    </div>
+  </div>
+</div>

@@ -7,15 +7,18 @@ export class BigNumberPipe implements PipeTransform {
   MILION = 1000000;
   THOUSANDS = 1000;
 
-  transform(value: number, ...args: any[]): string {
+  transform(value: number | null, ...args: any[]): string | null {
+    if (!value) {
+      return null;
+    }
     if (value / this.TRILION > 1) {
-      return `${value / this.TRILION} T`;
+      return `${(value / this.TRILION).toFixed(3)} T`;
     } else if (value / this.BILION > 1) {
-      return `${value / this.BILION} B`;
+      return `${(value / this.BILION).toFixed(3)} B`;
     } else if (value / this.MILION > 1) {
-      return `${value / this.MILION} M`;
+      return `${(value / this.MILION).toFixed(3)} M`;
     } else if (value / this.THOUSANDS > 1) {
-      return `${value / this.THOUSANDS} K`;
+      return `${(value / this.THOUSANDS).toFixed(3)} K`;
     } else {
       return `${value}`;
     }
