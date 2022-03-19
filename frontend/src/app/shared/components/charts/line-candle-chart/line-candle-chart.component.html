@@ -1,10 +1,17 @@
-<app-chart-title [title]="title" [value]="lastValue"> </app-chart-title>
+<app-chart-title
+  [title]="title"
+  [value]="lastValue"
+  [bigNumbers]="bigNumbers"
+  [currency]="currency"
+>
+</app-chart-title>
 <div *ngIf="graphType === 'candle'" class="pl-8 pr-8 pb-4 border-b-2">
   <app-candle-chart
     [data]="getCandles()"
     [period]="period"
     [size]="size"
     [id]="title + 'candles'"
+    [bigNumbers]="bigNumbers"
   ></app-candle-chart>
 </div>
 <div *ngIf="graphType === 'line'" class="pl-8 pr-8 pb-4 border-b-2">
@@ -13,6 +20,7 @@
     [period]="period"
     [size]="size"
     [id]="title + 'line'"
+    [bigNumbers]="bigNumbers"
   ></app-line-chart>
 </div>
 <div class="flex justify-between w-full pb-4 pr-8 pl-8 pt-4">

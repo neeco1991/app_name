@@ -15,6 +15,7 @@ import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 
 import { Period } from '../period-selector/period-selector.component';
+import { CurrencyPipe } from 'src/app/shared/pipes/currency.pipe';
 
 export interface Am5Candle {
   date: number;
@@ -41,6 +42,8 @@ export class CandleChartComponent
   @Input() period: Period;
   @Input() size = [1500, 500];
   @Input() id = 'chartDiv';
+  @Input() bigNumbers = false;
+  @Input() currency = 'USD';
 
   private root: am5.Root;
   private series: any;
@@ -49,6 +52,8 @@ export class CandleChartComponent
 
   private upColor = '#76b041';
   private downColor = '#e4572e';
+
+  private currencyPipe = new CurrencyPipe();
 
   ngAfterViewInit() {
     this.browserOnly(() => {
@@ -93,9 +98,28 @@ export class CandleChartComponent
       })
     );
 
+    root.numberFormatter.setAll({
+      numberFormat: '#a',
+      bigNumberPrefixes: [
+        { number: 1e6, suffix: 'M' },
+        { number: 1e9, suffix: 'B' },
+        { number: 1e12, suffix: 'T' },
+      ],
+    });
+
+    const yStyle: any = {
+      numberFormat: `#${this.currencyPipe.transform(this.currency)}`,
+    };
+    if (this.bigNumbers) {
+      yStyle['numberFormat'] = `#a${this.currencyPipe.transform(
+        this.currency
+      )}`;
+    }
+
     // Create Y-axis
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
+        ...yStyle,
         renderer: am5xy.AxisRendererY.new(root, {}),
       })
     );

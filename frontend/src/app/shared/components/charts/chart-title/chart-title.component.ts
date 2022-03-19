@@ -1,15 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-chart-title',
   templateUrl: './chart-title.component.html',
   styleUrls: ['./chart-title.component.scss'],
 })
-export class ChartTitleComponent implements OnInit {
+export class ChartTitleComponent {
   constructor() {}
 
   @Input() title: string;
   @Input() value: number;
-
-  ngOnInit(): void {}
+  @Input() bigNumbers: boolean = false;
+  @Input() currency: string | null;
 }

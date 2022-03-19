@@ -1,4 +1,9 @@
 <div class="flex flex-col items-center pt-4">
   <h2 class="text-7xl text-gray-500 uppercase font-bold">{{ title }}</h2>
-  <p class="text-5xl text-gray-500 font-semibold">{{ value }}</p>
+  <p *ngIf="!bigNumbers" class="text-5xl text-gray-500 font-semibold">
+    {{ value }}{{ " " }}{{ currency | currency }}
+  </p>
+  <p *ngIf="bigNumbers" class="text-5xl text-gray-500 font-semibold">
+    {{ value | big_number }}{{ currency | currency }}
+  </p>
 </div>

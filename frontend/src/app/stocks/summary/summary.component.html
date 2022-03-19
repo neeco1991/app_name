@@ -25,6 +25,8 @@
               [data]="marketCap"
               [size]="[1200, 400]"
               title="market cap"
+              [bigNumbers]="true"
+              [currency]="currency$ | async"
             ></app-line-candle-chart>
           </div>
         </div>
@@ -34,6 +36,7 @@
               [data]="candles"
               [size]="[1200, 400]"
               title="price"
+              [currency]="currency$ | async"
             ></app-line-candle-chart>
           </div>
         </div>

@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
+import { CurrencyPipe } from 'src/app/shared/pipes/currency.pipe';
 // import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
 
 import { Period } from '../period-selector/period-selector.component';
@@ -37,6 +38,8 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() period: Period;
   @Input() size = [1500, 500];
   @Input() id = 'chartDiv';
+  @Input() bigNumbers = false;
+  @Input() currency = 'USD';
 
   private root: am5.Root;
   private series: any;
@@ -45,6 +48,8 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
 
   private upColor = '#90ee90';
   private downColor = '#ff7f7f';
+
+  private currencyPipe = new CurrencyPipe();
 
   ngAfterViewInit() {
     this.browserOnly(() => {
@@ -78,24 +83,28 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
   private lineChart() {
     let root = am5.Root.new(this.id);
 
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([am5themes_Animated.new(root)]);
-    // root.setThemes([am5themes_Responsive.new(root)]);
 
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
+    root.numberFormatter.setAll({
+      numberFormat: '#a',
+      bigNumberPrefixes: [
+        { number: 1e6, suffix: 'M' },
+        { number: 1e9, suffix: 'B' },
+        { number: 1e12, suffix: 'T' },
+      ],
+    });
+
     let chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
-        panY: true,
-        wheelX: 'panX',
+        panY: false,
+        // wheelX: 'panX',
         wheelY: 'zoomX',
+        layout: root.verticalLayout,
+        maxTooltipDistance: 0,
       })
     );
 
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
     let cursor = chart.set(
       'cursor',
       am5xy.XYCursor.new(root, {
@@ -104,8 +113,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
     );
     cursor.lineY.set('visible', false);
 
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     this.xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
         maxDeviation: 0.5,
@@ -120,8 +127,18 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
       })
     );
 
+    const yStyle: any = {
+      numberFormat: `#${this.currencyPipe.transform(this.currency)}`,
+    };
+    if (this.bigNumbers) {
+      yStyle['numberFormat'] = `#a${this.currencyPipe.transform(
+        this.currency
+      )}`;
+    }
+
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
+        ...yStyle,
         maxDeviation: 1,
         renderer: am5xy.AxisRendererY.new(root, {
           pan: 'zoom',
@@ -129,8 +146,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
       })
     );
 
-    // Add series
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     this.series = chart.series.push(
       am5xy.SmoothedXLineSeries.new(root, {
         name: 'Series',
@@ -149,8 +164,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
       visible: true,
       fillOpacity: 0.2,
     });
-
-    // this.setColor();
 
     let scrollbar = am5xy.XYChartScrollbar.new(root, {
       orientation: 'horizontal',
@@ -188,8 +201,6 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
     this.series.data.setAll(this.data);
     this.scrollbarSeries.data.setAll(this.data);
 
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
     this.series.appear(1000);
     chart.appear(1000, 100);
 

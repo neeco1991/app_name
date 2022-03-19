@@ -144,7 +144,10 @@ const CURRENCIES: { [key: string]: string | undefined } = {
 
 @Pipe({ name: 'currency' })
 export class CurrencyPipe implements PipeTransform {
-  transform(currency: string, ...args: any[]): string {
+  transform(currency: string | null, ...args: any[]): string {
+    if (!currency) {
+      return '';
+    }
     const symbol = CURRENCIES[currency];
     return symbol || '';
   }
