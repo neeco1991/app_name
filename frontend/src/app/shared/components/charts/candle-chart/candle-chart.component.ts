@@ -39,11 +39,12 @@ export class CandleChartComponent
   ) {}
 
   @Input() data: Am5Candle[];
-  @Input() period: Period;
   @Input() size = [1500, 500];
   @Input() id = 'chartDiv';
   @Input() bigNumbers = false;
   @Input() currency = 'USD';
+
+  private period: Period = '1y';
 
   private root: am5.Root;
   private series: any;
@@ -247,6 +248,10 @@ export class CandleChartComponent
     );
 
     return root;
+  }
+
+  onSetPeriod(period: Period) {
+    this.period = period;
   }
 
   private pushData() {

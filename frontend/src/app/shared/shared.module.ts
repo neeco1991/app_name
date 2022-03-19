@@ -12,6 +12,8 @@ import { CardComponent } from './components/card/card.component';
 import { ChartTitleComponent } from './components/charts/chart-title/chart-title.component';
 import { BigNumberPipe } from './pipes/big-number.pipe';
 import { CurrencyPipe } from './pipes/currency.pipe';
+import { ControlBarComponent } from './components/charts/control-bar/control-bar.component';
+import { ChartTypeSelectorComponent } from './components/charts/line-candle-chart/chart-type-selector/chart-type-selector.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { CurrencyPipe } from './pipes/currency.pipe';
     PeriodSelectorComponent,
     CardComponent,
     ChartTitleComponent,
+    ControlBarComponent,
+    ChartTypeSelectorComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -37,7 +41,7 @@ import { CurrencyPipe } from './pipes/currency.pipe';
     PageOverlayComponent,
     LineCandleChartComponent,
     CardComponent,
-    // ChartTitleComponent,
+    ControlBarComponent,
   ],
 })
 export class SharedModule {}

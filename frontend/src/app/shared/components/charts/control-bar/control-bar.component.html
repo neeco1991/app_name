@@ -1,0 +1,8 @@
+<div class="border-t-2">
+  <div class="flex justify-between w-full pb-4 pr-8 pl-8 pt-4">
+    <app-period-selector
+      (periodChange)="onSetPeriod($event)"
+    ></app-period-selector>
+    <ng-content></ng-content>
+  </div>
+</div>

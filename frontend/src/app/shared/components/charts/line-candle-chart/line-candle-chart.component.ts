@@ -6,7 +6,6 @@ import {
 import { Candles } from 'src/app/stocks/store';
 import { Am5Candle } from '../candle-chart/candle-chart.component';
 import { Am5Point } from '../line-chart/line-chart.component';
-import { Period } from '../period-selector/period-selector.component';
 
 type GraphType = 'candle' | 'line';
 
@@ -22,16 +21,11 @@ export class LineCandleChartComponent implements OnInit {
   @Input() bigNumbers: boolean = false;
   @Input() currency: string | null;
 
-  period: Period = '1y';
   graphType: GraphType = 'line';
   lastValue: number;
 
   ngOnInit(): void {
     this.lastValue = this.data.close[this.data.close.length - 1];
-  }
-
-  onSetPeriod(period: Period) {
-    this.period = period;
   }
 
   setGraphType(graphType: GraphType) {

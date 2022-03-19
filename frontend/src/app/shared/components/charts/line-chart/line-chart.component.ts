@@ -35,19 +35,20 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
   ) {}
 
   @Input() data: Am5Point[];
-  @Input() period: Period;
   @Input() size = [1500, 500];
   @Input() id = 'chartDiv';
   @Input() bigNumbers = false;
   @Input() currency = 'USD';
+
+  private period: Period = '1y';
 
   private root: am5.Root;
   private series: any;
   private scrollbarSeries: any;
   private xAxis: any;
 
-  private upColor = '#90ee90';
-  private downColor = '#ff7f7f';
+  // private upColor = '#90ee90';
+  // private downColor = '#ff7f7f';
 
   private currencyPipe = new CurrencyPipe();
 
@@ -207,13 +208,18 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
     return root;
   }
 
-  private setColor() {
-    const isGoingUp =
-      this.data[this.data.length - 1].value - this.data[0].value > 0;
-    const fillColor = isGoingUp ? this.upColor : this.downColor;
-    this.series.set('fill', fillColor);
-    this.series.set('stroke', fillColor);
+  onSetPeriod(period: Period) {
+    this.period = period;
+    // this.setScrollbar();
   }
+
+  // private setColor() {
+  //   const isGoingUp =
+  //     this.data[this.data.length - 1].value - this.data[0].value > 0;
+  //   const fillColor = isGoingUp ? this.upColor : this.downColor;
+  //   this.series.set('fill', fillColor);
+  //   this.series.set('stroke', fillColor);
+  // }
 
   private setScrollbar() {
     this.series.data.setAll(this.data);
