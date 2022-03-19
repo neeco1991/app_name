@@ -8,48 +8,26 @@
 <div *ngIf="graphType === 'candle'" class="pl-8 pr-8 pb-4 border-b-2">
   <app-candle-chart
     [data]="getCandles()"
-    [period]="period"
     [size]="size"
     [id]="title + 'candles'"
     [bigNumbers]="bigNumbers"
-  ></app-candle-chart>
+  >
+    <app-chart-type-selector
+      (setGraphType)="setGraphType($event)"
+      [activeType]="graphType"
+    ></app-chart-type-selector>
+  </app-candle-chart>
 </div>
-<div *ngIf="graphType === 'line'" class="pl-8 pr-8 pb-4 border-b-2">
+<div *ngIf="graphType === 'line'" class="pl-8 pr-8 pb-4">
   <app-line-chart
     [data]="getPoints()"
-    [period]="period"
     [size]="size"
     [id]="title + 'line'"
     [bigNumbers]="bigNumbers"
-  ></app-line-chart>
-</div>
-<div class="flex justify-between w-full pb-4 pr-8 pl-8 pt-4">
-  <app-period-selector
-    (periodChange)="onSetPeriod($event)"
-  ></app-period-selector>
-  <div>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full mr-2"
-      [ngClass]="{ 'bg-blue-700': graphType === 'candle' }"
-      (click)="setGraphType('candle')"
-    >
-      <img
-        src="assets/icons/candle-chart-filled.svg"
-        style="height: 15px; width: 15px"
-        alt=""
-      />
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full"
-      [ngClass]="{ 'bg-blue-700': graphType === 'line' }"
-      (click)="setGraphType('line')"
-    >
-      <img
-        src="assets/icons/line-chart-1.svg"
-        style="height: 15px; width: 15px"
-        alt=""
-        [ngClass]="{ 'bg-blue-700': period === '1w' }"
-      />
-    </button>
-  </div>
+  >
+    <app-chart-type-selector
+      (setGraphType)="setGraphType($event)"
+      [activeType]="graphType"
+    ></app-chart-type-selector>
+  </app-line-chart>
 </div>
