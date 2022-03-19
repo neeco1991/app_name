@@ -5,13 +5,19 @@
     price
   </h3>
   <div class="px-1">
-    <div class="flex justify-between">
+    <div
+      class="flex justify-between cursor-pointer"
+      (click)="onSelect('price')"
+    >
       <p class="font-semibold uppercase">price</p>
       <p class="font-medium uppercase ml-4">
-        {{ stats.price.price | big_number }}{{ currency | currency }}
+        {{ stats.price.price }}{{ currency | currency }}
       </p>
     </div>
-    <div class="flex justify-between">
+    <div
+      class="flex justify-between cursor-pointer"
+      (click)="onSelect('marketCap')"
+    >
       <p class="font-semibold uppercase">market cap</p>
       <p class="font-medium uppercase ml-4">
         {{ stats.price.marketCap | big_number }}{{ currency | currency }}

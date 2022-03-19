@@ -36,6 +36,7 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
   @Input() data: Am5Point[];
   @Input() period: Period;
   @Input() size = [1500, 500];
+  @Input() id = 'chartDiv';
 
   private root: am5.Root;
   private series: any;
@@ -75,7 +76,7 @@ export class LineChartComponent implements AfterViewInit, OnDestroy, OnChanges {
   }
 
   private lineChart() {
-    let root = am5.Root.new('linechartdiv');
+    let root = am5.Root.new(this.id);
 
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/

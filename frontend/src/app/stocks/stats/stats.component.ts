@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, of } from 'rxjs';
 
 export interface Stats {
   price: { price: number; marketCap: number };
 }
+
+export type StatList = 'price' | 'marketCap';
 
 @Component({
   selector: 'app-stats',
@@ -20,9 +21,9 @@ export class StatsComponent {
       marketCap: 7000000000000,
     },
   };
-  @Output('selectedStat') selectedStat = new EventEmitter<string>();
+  @Output('selectedStat') selectedStat = new EventEmitter<StatList>();
 
-  onSelect(stat: string) {
+  onSelect(stat: StatList) {
     this.selectedStat.emit(stat);
   }
 }

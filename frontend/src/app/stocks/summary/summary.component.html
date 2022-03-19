@@ -11,15 +11,31 @@
       <p class="text-5xl text-gray-500">{{ profile.name }}</p>
     </div>
     <div *ngIf="stats$ | async as stats" class="mt-4">
-      <app-stats [stats]="stats"></app-stats>
+      <app-stats
+        [stats]="stats"
+        (selectedStat)="onSelectStat($event)"
+      ></app-stats>
     </div>
+
     <div class="mt-4">
       <app-card>
-        <div *ngIf="marketCap$ | async as marketCap">
-          <app-line-candle-chart
-            [data]="marketCap"
-            [size]="[1200, 400]"
-          ></app-line-candle-chart>
+        <div *ngIf="selectedStat === 'marketCap'">
+          <div *ngIf="marketCap$ | async as marketCap">
+            <app-line-candle-chart
+              [data]="marketCap"
+              [size]="[1200, 400]"
+              title="market cap"
+            ></app-line-candle-chart>
+          </div>
+        </div>
+        <div *ngIf="selectedStat === 'price'">
+          <div *ngIf="candles$ | async as candles">
+            <app-line-candle-chart
+              [data]="candles"
+              [size]="[1200, 400]"
+              title="price"
+            ></app-line-candle-chart>
+          </div>
         </div>
       </app-card>
     </div>

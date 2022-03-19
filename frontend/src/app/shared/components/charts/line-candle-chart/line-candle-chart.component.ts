@@ -18,6 +18,7 @@ type GraphType = 'candle' | 'line';
 export class LineCandleChartComponent implements OnInit {
   @Input() data: Candles;
   @Input() size = [1500, 500];
+  @Input() title: string;
 
   period: Period = '1y';
   graphType: GraphType = 'line';

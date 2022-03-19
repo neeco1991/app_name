@@ -40,6 +40,7 @@ export class CandleChartComponent
   @Input() data: Am5Candle[];
   @Input() period: Period;
   @Input() size = [1500, 500];
+  @Input() id = 'chartDiv';
 
   private root: am5.Root;
   private series: any;
@@ -78,7 +79,7 @@ export class CandleChartComponent
   }
 
   private candleChart() {
-    let root = am5.Root.new('candlechartdiv');
+    let root = am5.Root.new(this.id);
 
     root.setThemes([am5themes_Animated.new(root)]);
 

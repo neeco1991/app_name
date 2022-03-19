@@ -8,12 +8,11 @@ import {
   pluck,
   Subject,
   takeUntil,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 
 import * as fromApp from '../../store';
-import { Stats } from '../stats/stats.component';
+import { StatList, Stats } from '../stats/stats.component';
 import { Candles } from '../store';
 
 @Component({
@@ -28,6 +27,7 @@ export class SummaryComponent implements OnDestroy {
   ) {}
 
   destroyed$ = new Subject<void>();
+  selectedStat: StatList = 'price';
 
   tiker$ = this.route.params.pipe(
     takeUntil(this.destroyed$),
@@ -143,5 +143,9 @@ export class SummaryComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  onSelectStat(stat: StatList) {
+    this.selectedStat = stat;
   }
 }
