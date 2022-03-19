@@ -15,9 +15,9 @@
     </div>
     <div class="mt-4">
       <app-card>
-        <div *ngIf="candles$ | async as candles">
+        <div *ngIf="marketCap$ | async as marketCap">
           <app-line-candle-chart
-            [data]="candles"
+            [data]="marketCap"
             [size]="[1200, 400]"
           ></app-line-candle-chart>
         </div>

@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import {
   combineLatest,
   map,
+  Observable,
   pluck,
   Subject,
   takeUntil,
@@ -13,6 +14,7 @@ import {
 
 import * as fromApp from '../../store';
 import { Stats } from '../stats/stats.component';
+import { Candles } from '../store';
 
 @Component({
   selector: 'app-summary',
@@ -54,10 +56,6 @@ export class SummaryComponent implements OnDestroy {
     .select('stock')
     .pipe(takeUntil(this.destroyed$), pluck('profile'));
 
-  candles$ = this.store
-    .select('stock')
-    .pipe(takeUntil(this.destroyed$), pluck('candles'));
-
   currency$ = this.store.select('stock').pipe(
     takeUntil(this.destroyed$),
     pluck('financials'),
@@ -69,22 +67,74 @@ export class SummaryComponent implements OnDestroy {
     takeUntil(this.destroyed$),
     pluck('financials'),
     pluck('incomeStatement'),
-    map(({ fy }) => fy[0].weightedAverageShsOut)
+    map(({ fy }) =>
+      fy.map((income) => ({
+        date: new Date(income.date),
+        shares: income.weightedAverageShsOut,
+      }))
+    )
   );
+
+  candles$: Observable<Candles & { shares: number[] }> = this.store
+    .select('stock')
+    .pipe(
+      takeUntil(this.destroyed$),
+      pluck('candles'),
+      withLatestFrom(this.WNShares$),
+      map(([candles, shares]) => {
+        const nShares: number[] = [];
+
+        const sharesLength = shares.length;
+        let candlesIndex = candles.close.length - 1;
+        let sharesIndex = 0;
+        while (candlesIndex >= 0) {
+          while (
+            sharesIndex < sharesLength - 1 &&
+            shares[sharesIndex].date >= candles.time[candlesIndex]
+          ) {
+            sharesIndex++;
+          }
+          nShares.unshift(shares[sharesIndex].shares);
+          candlesIndex--;
+        }
+        return {
+          ...candles,
+          shares: nShares,
+        };
+      })
+    );
 
   marketCap$ = this.candles$.pipe(
     takeUntil(this.destroyed$),
-    withLatestFrom(this.WNShares$),
-    map(([{ close }, shares]) => close[close.length - 1] * shares)
+    map((candles) => {
+      const marketCap: Candles = {
+        close: [],
+        open: [],
+        low: [],
+        high: [],
+        time: [],
+        volume: [],
+      };
+
+      for (let i = 0; i < candles.close.length; i++) {
+        marketCap.close.push(candles.close[i] * candles.shares[i]);
+        marketCap.open.push(candles.open[i] * candles.shares[i]);
+        marketCap.low.push(candles.low[i] * candles.shares[i]);
+        marketCap.high.push(candles.high[i] * candles.shares[i]);
+        marketCap.volume.push(candles.volume[i]);
+        marketCap.time.push(candles.time[i]);
+      }
+      return marketCap;
+    })
   );
 
   stats$ = combineLatest([this.candles$, this.marketCap$]).pipe(
     takeUntil(this.destroyed$),
     map(
-      ([{ close }, marketCap]): Stats => ({
+      ([candles, marketCap]): Stats => ({
         price: {
-          price: close[close.length - 1],
-          marketCap,
+          price: candles.close[candles.close.length - 1],
+          marketCap: marketCap.close[marketCap.close.length - 1],
         },
       })
     )
