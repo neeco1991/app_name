@@ -42,7 +42,7 @@ export class CandleChartComponent
   @Input() size = [1500, 500];
   @Input() id = 'chartDiv';
   @Input() bigNumbers = false;
-  @Input() currency = 'USD';
+  @Input() currency: string | null;
 
   private period: Period = '1y';
 

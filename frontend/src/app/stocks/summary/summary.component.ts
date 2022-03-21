@@ -63,7 +63,7 @@ export class SummaryComponent implements OnDestroy {
     map(({ fy }) => fy[0].reportedCurrency)
   );
 
-  WNShares$ = this.store.select('stock').pipe(
+  incomeStatement$ = this.store.select('stock').pipe(
     takeUntil(this.destroyed$),
     pluck('financials'),
     pluck('incomeStatement'),
@@ -71,40 +71,130 @@ export class SummaryComponent implements OnDestroy {
       fy.map((income) => ({
         date: new Date(income.date),
         shares: income.weightedAverageShsOut,
+        revenue: income.revenue,
+        netIncome: income.netIncome,
       }))
     )
   );
 
-  candles$: Observable<Candles & { shares: number[] }> = this.store
+  candles$: Observable<Candles> = this.store
     .select('stock')
-    .pipe(
-      takeUntil(this.destroyed$),
-      pluck('candles'),
-      withLatestFrom(this.WNShares$),
-      map(([candles, shares]) => {
-        const nShares: number[] = [];
+    .pipe(takeUntil(this.destroyed$), pluck('candles'));
 
-        const sharesLength = shares.length;
-        let candlesIndex = candles.close.length - 1;
-        let sharesIndex = 0;
-        while (candlesIndex >= 0) {
-          while (
-            sharesIndex < sharesLength - 1 &&
-            shares[sharesIndex].date >= candles.time[candlesIndex]
-          ) {
-            sharesIndex++;
-          }
-          nShares.unshift(shares[sharesIndex].shares);
-          candlesIndex--;
+  stockDaylyData$: Observable<
+    Candles & { shares: number[]; revenue: number[]; netIncome: number[] }
+  > = combineLatest([this.candles$, this.incomeStatement$]).pipe(
+    takeUntil(this.destroyed$),
+    map(([candles, income]) => {
+      const nShares: number[] = [];
+      const ltmRev: number[] = [];
+      const ltmNetInc: number[] = [];
+
+      const sharesLength = income.length;
+      let candlesIndex = candles.close.length - 1;
+      let sharesIndex = 0;
+      while (candlesIndex >= 0) {
+        while (
+          sharesIndex < sharesLength - 1 &&
+          income[sharesIndex].date >= candles.time[candlesIndex]
+        ) {
+          sharesIndex++;
         }
-        return {
-          ...candles,
-          shares: nShares,
-        };
-      })
-    );
+        nShares.unshift(income[sharesIndex].shares);
+        ltmRev.unshift(income[sharesIndex].revenue);
+        ltmNetInc.unshift(income[sharesIndex].netIncome);
+        candlesIndex--;
+      }
+      return {
+        ...candles,
+        shares: nShares,
+        revenue: ltmRev,
+        netIncome: ltmNetInc,
+      };
+    })
+  );
 
-  marketCap$ = this.candles$.pipe(
+  PE$ = this.stockDaylyData$.pipe(
+    takeUntil(this.destroyed$),
+    map((candles) => {
+      const PE: Candles = {
+        close: [],
+        open: [],
+        low: [],
+        high: [],
+        time: [],
+        volume: [],
+      };
+
+      for (let i = 0; i < candles.close.length; i++) {
+        PE.close.push(
+          Math.round(
+            (candles.close[i] * candles.shares[i] * 100) / candles.netIncome[i]
+          ) / 100
+        );
+        PE.open.push(
+          Math.round(
+            (candles.open[i] * candles.shares[i] * 100) / candles.netIncome[i]
+          ) / 100
+        );
+        PE.low.push(
+          Math.round(
+            (candles.low[i] * candles.shares[i] * 100) / candles.netIncome[i]
+          ) / 100
+        );
+        PE.high.push(
+          Math.round(
+            (candles.high[i] * candles.shares[i] * 100) / candles.netIncome[i]
+          ) / 100
+        );
+        PE.volume.push(candles.volume[i]);
+        PE.time.push(candles.time[i]);
+      }
+      return PE;
+    })
+  );
+
+  PS$ = this.stockDaylyData$.pipe(
+    takeUntil(this.destroyed$),
+    map((candles) => {
+      const PS: Candles = {
+        close: [],
+        open: [],
+        low: [],
+        high: [],
+        time: [],
+        volume: [],
+      };
+
+      for (let i = 0; i < candles.close.length; i++) {
+        PS.close.push(
+          Math.round(
+            (candles.close[i] * candles.shares[i] * 100) / candles.revenue[i]
+          ) / 100
+        );
+        PS.open.push(
+          Math.round(
+            (candles.open[i] * candles.shares[i] * 100) / candles.revenue[i]
+          ) / 100
+        );
+        PS.low.push(
+          Math.round(
+            (candles.low[i] * candles.shares[i] * 100) / candles.revenue[i]
+          ) / 100
+        );
+        PS.high.push(
+          Math.round(
+            (candles.high[i] * candles.shares[i] * 100) / candles.revenue[i]
+          ) / 100
+        );
+        PS.volume.push(candles.volume[i]);
+        PS.time.push(candles.time[i]);
+      }
+      return PS;
+    })
+  );
+
+  marketCap$ = this.stockDaylyData$.pipe(
     takeUntil(this.destroyed$),
     map((candles) => {
       const marketCap: Candles = {
@@ -128,13 +218,22 @@ export class SummaryComponent implements OnDestroy {
     })
   );
 
-  stats$ = combineLatest([this.candles$, this.marketCap$]).pipe(
+  stats$ = combineLatest([
+    this.candles$,
+    this.marketCap$,
+    this.PE$,
+    this.PS$,
+  ]).pipe(
     takeUntil(this.destroyed$),
     map(
-      ([candles, marketCap]): Stats => ({
+      ([candles, marketCap, PE, PS]): Stats => ({
         price: {
           price: candles.close[candles.close.length - 1],
           marketCap: marketCap.close[marketCap.close.length - 1],
+        },
+        valuation: {
+          PE: PE.close[PE.close.length - 1],
+          PS: PS.close[PS.close.length - 1],
         },
       })
     )

@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export interface Stats {
   price: { price: number; marketCap: number };
+  valuation: { PE: number; PS: number };
 }
 
-export type StatList = 'price' | 'marketCap';
+export type StatList = 'price' | 'marketCap' | 'PE' | 'PS';
 
 @Component({
   selector: 'app-stats',
@@ -15,12 +16,7 @@ export class StatsComponent {
   constructor() {}
 
   @Input() currency: string = 'USD';
-  @Input() stats: Stats = {
-    price: {
-      price: 1500,
-      marketCap: 7000000000000,
-    },
-  };
+  @Input() stats: Stats;
   @Output('selectedStat') selectedStat = new EventEmitter<StatList>();
 
   onSelect(stat: StatList) {

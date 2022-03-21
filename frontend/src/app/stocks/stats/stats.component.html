@@ -1,27 +1,51 @@
-<div class="flex flex-col rounded-lg border-2 border-black">
-  <h3
-    class="font-semibold uppercase border-b-2 border-black flex justify-center text-4xl"
-  >
-    price
-  </h3>
-  <div class="px-1">
-    <div
-      class="flex justify-between cursor-pointer"
-      (click)="onSelect('price')"
+<div class="flex justify-between w-[1240px]">
+  <div class="flex flex-col rounded-lg border-2 border-black">
+    <h3
+      class="font-semibold uppercase border-b-2 border-black flex justify-center text-4xl px-1"
     >
-      <p class="font-semibold uppercase">price</p>
-      <p class="font-medium uppercase ml-4">
-        {{ stats.price.price }}{{ " " }}{{ currency | currency }}
-      </p>
+      price
+    </h3>
+    <div class="px-1">
+      <div
+        class="flex justify-between cursor-pointer"
+        (click)="onSelect('price')"
+      >
+        <p class="font-semibold uppercase">price</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.price.price }}{{ " " }}{{ currency | currency }}
+        </p>
+      </div>
+      <div
+        class="flex justify-between cursor-pointer"
+        (click)="onSelect('marketCap')"
+      >
+        <p class="font-semibold uppercase">market cap</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.price.marketCap | big_number }}{{ currency | currency }}
+        </p>
+      </div>
     </div>
-    <div
-      class="flex justify-between cursor-pointer"
-      (click)="onSelect('marketCap')"
+  </div>
+
+  <div class="flex flex-col rounded-lg border-2 border-black">
+    <h3
+      class="font-semibold uppercase border-b-2 border-black flex justify-center text-4xl px-1"
     >
-      <p class="font-semibold uppercase">market cap</p>
-      <p class="font-medium uppercase ml-4">
-        {{ stats.price.marketCap | big_number }}{{ currency | currency }}
-      </p>
+      valuation
+    </h3>
+    <div class="px-1">
+      <div class="flex justify-between cursor-pointer" (click)="onSelect('PE')">
+        <p class="font-semibold uppercase">PE</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.valuation.PE }}
+        </p>
+      </div>
+      <div class="flex justify-between cursor-pointer" (click)="onSelect('PS')">
+        <p class="font-semibold uppercase">PS</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.valuation.PS }}
+        </p>
+      </div>
     </div>
   </div>
 </div>

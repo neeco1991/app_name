@@ -40,6 +40,24 @@
             ></app-line-candle-chart>
           </div>
         </div>
+        <div *ngIf="selectedStat === 'PE'">
+          <div *ngIf="PE$ | async as PE">
+            <app-line-candle-chart
+              [data]="PE"
+              [size]="[1200, 400]"
+              title="price earning"
+            ></app-line-candle-chart>
+          </div>
+        </div>
+        <div *ngIf="selectedStat === 'PS'">
+          <div *ngIf="PS$ | async as PS">
+            <app-line-candle-chart
+              [data]="PS"
+              [size]="[1200, 400]"
+              title="price to sales"
+            ></app-line-candle-chart>
+          </div>
+        </div>
       </app-card>
     </div>
   </div>
