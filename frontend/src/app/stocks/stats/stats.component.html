@@ -24,6 +24,12 @@
           {{ stats.price.marketCap | big_number }}{{ currency | currency }}
         </p>
       </div>
+      <div class="flex justify-between cursor-pointer" (click)="onSelect('EV')">
+        <p class="font-semibold uppercase">ev</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.price.EV | big_number }}{{ currency | currency }}
+        </p>
+      </div>
     </div>
   </div>
 
@@ -44,6 +50,12 @@
         <p class="font-semibold uppercase">PS</p>
         <p class="font-medium uppercase ml-4">
           {{ stats.valuation.PS }}
+        </p>
+      </div>
+      <div class="flex justify-between cursor-pointer" (click)="onSelect('PB')">
+        <p class="font-semibold uppercase">PB</p>
+        <p class="font-medium uppercase ml-4">
+          {{ stats.valuation.PB }}
         </p>
       </div>
     </div>

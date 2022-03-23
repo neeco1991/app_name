@@ -29,9 +29,9 @@ export class StocksResolver implements Resolve<void> {
     );
 
     // setTimeout(() => {
-    // this.store.dispatch(
-    //   StockActions.fetchBalanceSheet({ symbol, limit: undefined })
-    // );
+    this.store.dispatch(
+      StockActions.fetchBalanceSheet({ symbol, limit: undefined })
+    );
     // }, 0);
     // setTimeout(() => {
     this.store.dispatch(

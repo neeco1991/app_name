@@ -20,11 +20,22 @@
     <div class="mt-4">
       <app-card>
         <div *ngIf="selectedStat === 'marketCap'">
-          <div *ngIf="marketCap$ | async as marketCap">
+          <div *ngIf="stockDaylyData$ | async as stockDaylyData">
             <app-line-candle-chart
-              [data]="marketCap"
+              [data]="stockDaylyData.marketCap"
               [size]="[1200, 400]"
               title="market cap"
+              [bigNumbers]="true"
+              [currency]="currency$ | async"
+            ></app-line-candle-chart>
+          </div>
+        </div>
+        <div *ngIf="selectedStat === 'EV'">
+          <div *ngIf="stockDaylyData$ | async as stockDaylyData">
+            <app-line-candle-chart
+              [data]="stockDaylyData.EV"
+              [size]="[1200, 400]"
+              title="enterprise value"
               [bigNumbers]="true"
               [currency]="currency$ | async"
             ></app-line-candle-chart>
@@ -41,20 +52,29 @@
           </div>
         </div>
         <div *ngIf="selectedStat === 'PE'">
-          <div *ngIf="PE$ | async as PE">
+          <div *ngIf="stockDaylyData$ | async as stockDaylyData">
             <app-line-candle-chart
-              [data]="PE"
+              [data]="stockDaylyData.PE"
               [size]="[1200, 400]"
               title="price earning"
             ></app-line-candle-chart>
           </div>
         </div>
         <div *ngIf="selectedStat === 'PS'">
-          <div *ngIf="PS$ | async as PS">
+          <div *ngIf="stockDaylyData$ | async as stockDaylyData">
             <app-line-candle-chart
-              [data]="PS"
+              [data]="stockDaylyData.PS"
               [size]="[1200, 400]"
               title="price to sales"
+            ></app-line-candle-chart>
+          </div>
+        </div>
+        <div *ngIf="selectedStat === 'PB'">
+          <div *ngIf="stockDaylyData$ | async as stockDaylyData">
+            <app-line-candle-chart
+              [data]="stockDaylyData.PB"
+              [size]="[1200, 400]"
+              title="price to book"
             ></app-line-candle-chart>
           </div>
         </div>
